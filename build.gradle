@@ -1,0 +1,94 @@
+import android.Support
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$Versions.gradlePlugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$Versions.kotlinVersion"
+        classpath "gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$Versions.detekt"
+        classpath "com.google.gms:google-services:$Versions.playServicesPlugin"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name.contains("Test")) {
+            task.enabled = false
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force Support.appcompat
+            force Support.recyclerview
+            force Support.cardview
+            force Support.design
+            force Support.supportAnnotations
+            force Support.fragment
+            force Support.supportV4
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+detekt {
+    version = "$Versions.detekt"
+    defaultProfile {
+        config = file("$projectDir/detekt.yml")
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+        parallel = true
+    }
+}
+
+afterEvaluate {
+    task checkPullRequest {
+        doLast {
+            println "Pull Request check success!"
+        }
+    }
+
+    task checkAll {
+        doFirst {
+            println "Running all enabled Code Inspections!"
+        }
+        doLast {
+            println "Code Inspection succeeded!"
+        }
+    }
+
+    checkAll.dependsOn(
+            ":app:lint",
+            ":common:lint",
+            ":data:lint",
+            ":navigation:lint",
+            ":presentation:lint",
+            detektCheck,
+    )
+
+    checkPullRequest.dependsOn(
+            checkAll,
+            ':app:assembleDebug',
+    )
+}

@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: '../lint/lint.gradle'
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.wanari.meetingtimer"
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':common')
+    implementation project(':navigation')
+    implementation project(':presentation')
+
+    implementation Deps.kotlin
+
+    implementation Android.Support.appcompat
+    implementation Android.Support.recyclerview
+    implementation Android.Support.cardview
+    implementation Android.Support.design
+    compileOnly Android.Support.supportAnnotations
+    implementation Android.Support.fragment
+    implementation Android.Support.constraint
+
+    implementation Android.ArchitectureComponents.runtime
+    implementation Android.ArchitectureComponents.extensions
+
+    Koin.all.each { dep ->
+        implementation dep
+    }
+
+    implementation Deps.timber
+    implementation Rx.rxpermissions
+
+    Firebase.all.each { firebase ->
+        implementation firebase
+    }
+
+    Calligraphy.all.each { cal ->
+        implementation cal
+    }
+
+    Rx.all.each { dep ->
+        implementation dep
+    }
+}
+
+task printVersionName {
+    doLast {
+        print android.defaultConfig.versionName
+    }
+}
+
+task printVersionCode {
+    doLast {
+        print android.defaultConfig.versionCode
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'

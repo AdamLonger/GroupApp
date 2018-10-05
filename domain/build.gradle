@@ -1,0 +1,8 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation Deps.kotlin
+    implementation Deps.threeTen
+    implementation Rx.rxjava
+}
+

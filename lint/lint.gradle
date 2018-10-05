@@ -1,0 +1,6 @@
+android{
+    lintOptions {
+        lintConfig file("../lint/lint.xml")
+        warningsAsErrors true
+    }
+}

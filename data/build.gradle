@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: '../lint/lint.gradle'
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+    }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':domain')
+    implementation project(':common')
+
+    implementation Deps.kotlin
+
+    Rx.all.each { dep ->
+        implementation dep
+    }
+
+    api Deps.threeTen
+    implementation Deps.timber
+
+    Koin.all.forEach { dep ->
+        compileOnly dep
+    }
+
+    implementation Rx.rxpermissions
+    Rx.all.each { dep ->
+        implementation dep
+    }
+}

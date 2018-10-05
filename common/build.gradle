@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply from: '../lint/lint.gradle'
+
+android {
+    compileSdkVersion Versions.compileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion Versions.minSdkVersion
+        targetSdkVersion Versions.targetSdkVersion
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':navigation')
+
+    implementation Deps.kotlin
+    implementation Deps.threeTen
+    implementation Deps.timber
+
+    implementation Android.Support.appcompat
+    implementation Android.Support.recyclerview
+
+    Koin.all.each { dep ->
+        implementation dep
+    }
+
+    Rx.all.each { dep ->
+        implementation dep
+    }
+}

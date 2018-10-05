@@ -1,0 +1,73 @@
+def versionName = ''
+def versionCode = ''
+
+pipeline {
+    agent none
+    stages {
+        stage('Init') {
+            agent any
+            steps {
+                script {
+                    def description = "Meeting Timer Build Job - Build $BUILD_NUMBER"
+                    currentBuild.setDescription(description)
+                }
+            }
+        }
+        stage('Build') {
+            agent {
+                docker {
+                    image 'circleci/android:api-27-alpha'
+                    args "-w /home/circleci/src -u root"
+                }
+            }
+            steps {
+                ansiColor('xterm') {
+                    sh 'sudo cp /home/circleci/.android $PWD/.android -r'
+                    sh 'cd /home/circleci/src'
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew assembleDebug assembleRelease'
+
+                    script {
+                        versionName = sh(script: './gradlew -q printVersionName', returnStdout: true).trim()
+                        versionCode = sh(script: './gradlew -q printVersionCode', returnStdout: true).trim()
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            node('master') {
+                script {
+                    currentBuild.result = currentBuild.result ?: 'SUCCESS'
+                    currentBuild.displayName = "v${versionName} VersionCode: ${versionCode} Build $BUILD_NUMBER"
+
+                    def cifsConfig = 'HUB'
+                    def destination = "MeetingTimerApp/install/android/v${versionName}_vc${versionCode}/build_$BUILD_NUMBER"
+                    def prefix = "app/build/outputs/apk"
+                    def srcFiles = "${prefix}/**/**" // Copy everything after prefix
+
+                    cifsPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: true, publishers: [
+                            [configName           : cifsConfig,
+                             transfers            : [
+                                     [cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: true, noDefaultExcludes: false, patternSeparator: '[,]+', remoteDirectory: destination, remoteDirectorySDF: false, removePrefix: prefix, sourceFiles: srcFiles],
+                             ],
+                             usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true
+                            ]
+                    ]
+//                    def branchUrlPrefix = "https://stash.wanari.com/projects/MEETIM/repos/meeting-timer-android/commits?until=refs/heads"
+//                    hipchatSend(room: 'Meeting Timer Technical', color: 'GREEN', notify: true, message: "<img src=\"https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/307076/shipitparrot-1505298023.gif\"/> SUCCESSFUL BUILD on $PULL_REQUEST_FROM_REPO_SLUG<br/>From <a href=\"$branchUrlPrefix/$PULL_REQUEST_FROM_BRANCH\"><b>$PULL_REQUEST_FROM_BRANCH</b></a> into <a href=\"$branchUrlPrefix/$PULL_REQUEST_TO_BRANCH\"><b>$PULL_REQUEST_TO_BRANCH</b></a><br/>Pull Request ID: <a href=\"$PULL_REQUEST_URL\"><b>#$PULL_REQUEST_ID</b></a>")
+                }
+            }
+        }
+//
+//        failure {
+//            node('master') {
+//                script {
+//                    def branchUrlPrefix = "https://stash.wanari.com/projects/MEETIM/repos/meeting-timer-android/commits?until=refs/heads"
+//                    hipchatSend(room: 'Meeting Timer  Technical', color: 'RED', notify: true, message: "<img src=\"https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/307076/pidgeon-1487059852.gif\"/> BUILD FAILED on $PULL_REQUEST_FROM_REPO_SLUG<br/>From <a href=\"$branchUrlPrefix/$PULL_REQUEST_FROM_BRANCH\"><b>$PULL_REQUEST_FROM_BRANCH</b></a> into <a href=\"$branchUrlPrefix/$PULL_REQUEST_TO_BRANCH\"><b>$PULL_REQUEST_TO_BRANCH</b></a><br/>Pull Request ID: <a href=\"$PULL_REQUEST_URL\"><b>#$PULL_REQUEST_ID</b></a>")
+//                }
+//            }
+//        }
+    }
+}

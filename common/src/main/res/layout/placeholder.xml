@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UnusedResources,UselessLeaf">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="android.arch.lifecycle.ViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--Placeholder layout-->
+        <!--Purpose: the framework can't generate the BR.vm if there is no "vm" variable defined in the module-->
+    </FrameLayout>
+</layout>
