@@ -22,6 +22,7 @@ object Versions {
     const val rxpermissions = "0.4.0"
 
     const val koin = "1.0.0"
+    const val mvi = "3.1.0"
 
     const val timber = "4.7.1"
     const val threeTen = "1.1.0"

@@ -5,7 +5,7 @@ apply from: '../lint/lint.gradle'
 
 android {
     compileSdkVersion Versions.compileSdkVersion
-    buildToolsVersion Versions.buildToolsVersion
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion Versions.minSdkVersion
@@ -24,6 +24,7 @@ dependencies {
     implementation project(':navigation')
     implementation project(':common')
 
+    implementation Deps.mvi
     implementation Deps.kotlin
 
     implementation Deps.timber

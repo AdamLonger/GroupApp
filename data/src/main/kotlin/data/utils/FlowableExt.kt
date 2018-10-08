@@ -1,4 +1,4 @@
-package com.wanari.meetingtimer.data.utils
+package data.utils
 
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable

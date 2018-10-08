@@ -5,13 +5,17 @@ apply from: '../lint/lint.gradle'
 
 android {
     compileSdkVersion Versions.compileSdkVersion
-    buildToolsVersion Versions.buildToolsVersion
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
         versionCode Versions.versionCode
         versionName Versions.versionName
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -36,5 +40,9 @@ dependencies {
     implementation Rx.rxpermissions
     Rx.all.each { dep ->
         implementation dep
+    }
+
+    Firebase.all.each { firebase ->
+        implementation firebase
     }
 }

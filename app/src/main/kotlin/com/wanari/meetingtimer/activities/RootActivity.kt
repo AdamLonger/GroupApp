@@ -1,9 +1,10 @@
-package com.wanari.meetingtimer
+package com.wanari.meetingtimer.activities
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.transition.TransitionInflater
+import com.wanari.meetingtimer.R
 import com.wanari.meetingtimer.common.di.createScreen
 import com.wanari.meetingtimer.common.rx.Schedulers
 import com.wanari.meetingtimer.common.ui.BaseActivity
@@ -18,7 +19,6 @@ import timber.log.Timber
 import java.lang.ref.WeakReference
 
 class RootActivity : BaseActivity() {
-
     private val screenManager by inject<ScreenManager>()
     private val schedulers by inject<Schedulers>()
 

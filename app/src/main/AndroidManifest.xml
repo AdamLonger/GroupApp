@@ -13,12 +13,16 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".RootActivity">
+        <activity android:name=".activities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.RootActivity" />
+
     </application>
 
 </manifest>

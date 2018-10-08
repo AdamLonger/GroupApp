@@ -5,5 +5,7 @@ object Deps {
 
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 
+    const val mvi = "com.hannesdorfmann.mosby3:mvi:${Versions.mvi}"
+
     const val playServicesBase = "com.google.android.gms:play-services-base:${Versions.playServicesBase}"
 }

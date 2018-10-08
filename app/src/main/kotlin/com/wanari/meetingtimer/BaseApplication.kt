@@ -9,12 +9,13 @@ import android.os.Build
 import android.support.v4.content.ContextCompat
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.wanari.meetingtimer.common.di.schedulerModule
-import com.wanari.meetingtimer.data.di.dataModule
 import com.wanari.meetingtimer.di.configModule
 import com.wanari.meetingtimer.di.navigatorModule
 import com.wanari.meetingtimer.di.permissionModule
 import com.wanari.meetingtimer.presentation.di.screenModule
 import com.wanari.meetingtimer.utils.KoinLogger
+import data.di.dataModule
+import data.di.firebaseModule
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
@@ -36,6 +37,7 @@ class BaseApplication : Application() {
             navigatorModule,
             permissionModule,
             dataModule,
+            firebaseModule,
             screenModule
     )
 
