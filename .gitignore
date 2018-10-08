@@ -8,6 +8,7 @@
 /captures
 .externalNativeBuild
 /nexus.properties
+/app/google-services.json
 
 **/*.apk
 **/output.json
