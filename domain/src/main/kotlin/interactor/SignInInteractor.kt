@@ -1,9 +1,8 @@
-package managers
+package interactor
 
 import io.reactivex.Completable
 
-interface LoginManager {
+interface SignInInteractor {
     fun signIn(email: String, pass: String): Completable
     fun signOut(): Completable
-    fun signUp(email: String, pass: String): Completable
 }

@@ -1,24 +1,16 @@
 package com.wanari.meetingtimer.common.ui
 
-import android.os.Bundle
 import android.support.annotation.CallSuper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import com.wanari.meetingtimer.common.mvi.MviBaseFragment
+import com.wanari.meetingtimer.common.mvi.MviView
 import com.wanari.meetingtimer.navigation.Screen
 
-abstract class ScreenFragment : BaseFragment() {
-
-    abstract val layoutRes: Int
+abstract class ScreenFragment<V : MviView<VS>, VS : Any> : MviBaseFragment<V, VS>() {
 
     protected val screen: Screen by lazy {
         arguments
                 ?.let { it[ARG_SCREEN] as? Screen }
                 ?: throw IllegalStateException("Screen not found in Bundle.")
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutRes, container, false)
     }
 
     @CallSuper

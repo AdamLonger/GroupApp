@@ -1,6 +1,7 @@
 package com.wanari.meetingtimer.activities
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.transition.TransitionInflater
@@ -11,6 +12,8 @@ import com.wanari.meetingtimer.common.ui.BaseActivity
 import com.wanari.meetingtimer.common.ui.ForegroundManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.navigation.NavigationEvent
+import com.wanari.meetingtimer.navigation.Navigator
+import com.wanari.meetingtimer.navigation.Screen
 import com.wanari.meetingtimer.navigation.ScreenManager
 import com.wanari.meetingtimer.navigation.applyTo
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
@@ -21,12 +24,15 @@ import java.lang.ref.WeakReference
 class RootActivity : BaseActivity() {
     private val screenManager by inject<ScreenManager>()
     private val schedulers by inject<Schedulers>()
+    private val navigator by inject<Navigator>()
 
-    private var currentScreenFragment: WeakReference<out ScreenFragment>? = null
+    private var currentScreenFragment: WeakReference<out ScreenFragment<*, *>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
+
+        handleIntent(intent)
 
         screenManager.dispatchNavigationEvent()
                 .subscribeOn(schedulers.computation())
@@ -55,9 +61,9 @@ class RootActivity : BaseActivity() {
 
             event.options.sharedElements?.let { sharedHolder ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    fragment.sharedElementEnterTransition = TransitionInflater
+                    fragment.setSharedElementEnterTransition(TransitionInflater
                             .from(this@RootActivity)
-                            .inflateTransition(sharedHolder.transitionRes)
+                            .inflateTransition(sharedHolder.transitionRes))
                 }
             }
 
@@ -75,12 +81,29 @@ class RootActivity : BaseActivity() {
         Timber.d("Navigate to: ${event.screen}")
     }
 
+    private fun handleIntent(intent: Intent) {
+        if (!intent.hasExtra(EXTRA_SCREEN_KEY)) {
+            navigator.navigateToHome()
+            return
+        }
+
+        val screen = intent.getParcelableExtra<Screen>(EXTRA_SCREEN_KEY)
+        intent.removeExtra(EXTRA_SCREEN_KEY)
+
+        if (screenManager.defaultScreen == screen) {
+            navigator.navigateToHome()
+        } else {
+            navigator.navigateTo(screen)
+        }
+    }
+
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 
     companion object {
         private const val FRAGMENT_TAG = "SCREEN_FRAGMENT_TAG"
+        private const val EXTRA_SCREEN_KEY = "EXTRA_SCREEN_KEY"
     }
 
     override fun onResume() {

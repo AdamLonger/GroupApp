@@ -1,9 +1,12 @@
 package data.di
 
-import data.firebase.DefaultLoginManager
-import managers.LoginManager
+import data.interactor.DefaultSignInInteractor
+import data.interactor.DefaultSignUpInteractor
+import interactor.SignInInteractor
+import interactor.SignUpInteractor
 import org.koin.dsl.module.module
 
 val dataModule = module {
-    single { DefaultLoginManager(get(), get()) as LoginManager }
+    single { DefaultSignInInteractor(get(), get()) as SignInInteractor }
+    single { DefaultSignUpInteractor(get(), get()) as SignUpInteractor }
 }
