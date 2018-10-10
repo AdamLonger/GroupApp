@@ -1,3 +1,25 @@
 <resources>
+
     <string name="app_name">MeetingTimer</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="re_password">Re-Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="email_key">email_key</string>
+    <string name="password_key">password_key</string>
+
+    <string name="firebase_no_user_error">There is no user record corresponding to this identifier.</string>
+    <string name="firebase_wrong_password_error">The password is invalid or the user does not have a password.</string>
+    <string name="firebase_email_format_error">The email address is badly formatted.</string>
+
+    <string name="message_created">Account Created!</string>
+    <string name="message_incorrect_pass_or_user">Email or password is incorrect!</string>
+    <string name="message_email_wrong_format">The email address is badly formatted!</string>
+    <string name="message_password_match_error">Passwords does not match!</string>
+    <string name="message_pass_empty">Password is empty!</string>
+    <string name="message_email_empty">Email is empty!</string>
+    <string name="message_logged_in">Logged in!</string>
+    <string name="message_error">ERROR</string>
 </resources>
