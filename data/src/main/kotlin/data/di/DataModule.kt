@@ -1,12 +1,12 @@
 package data.di
 
-import data.interactor.DefaultSignInInteractor
+import data.interactor.DefaultLogInInteractor
 import data.interactor.DefaultSignUpInteractor
-import interactor.SignInInteractor
+import interactor.LogInInteractor
 import interactor.SignUpInteractor
 import org.koin.dsl.module.module
 
 val dataModule = module {
-    single { DefaultSignInInteractor(get(), get()) as SignInInteractor }
+    single { DefaultLogInInteractor(get(), get()) as LogInInteractor }
     single { DefaultSignUpInteractor(get(), get()) as SignUpInteractor }
 }

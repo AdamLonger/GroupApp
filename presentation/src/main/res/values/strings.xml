@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">FragmentTransitionExample</string>
+    <string name="emptyString">""</string>
+
+
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="email_key">email_key</string>
+    <string name="password_key">password_key</string>
+
+    <string name="message_created">Account Created!</string>
+    <string name="message_incorrect_pass_or_user">Email or password is incorrect!</string>
+    <string name="message_email_wrong_format">The email address is badly formatted!</string>
+    <string name="message_confirmation_match_error">Confirmation does not match!</string>
+    <string name="message_pass_empty">Password is empty!</string>
+    <string name="message_conf_empty">Confirmation is empty!</string>
+    <string name="message_weak_password">Password should be at least 6 characters!</string>
+    <string name="message_email_already_exists">Email already exists!</string>
+    <string name="message_email_empty">Email is empty!</string>
+    <string name="message_logged_in">Logged in!</string>
+    <string name="message_error">ERROR</string>
+
+    <string name="toast_user_created">User created!</string>
 </resources>

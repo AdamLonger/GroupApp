@@ -1,6 +1,5 @@
 package data.firebase
 
-import com.androidhuman.rxfirebase2.auth.rxCreateUserWithEmailAndPassword
 import com.androidhuman.rxfirebase2.auth.rxSignOut
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -38,7 +37,7 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
                 .map { it.value }
     }
 
-    fun signIn(email: String, pass: String): Single<AuthResult> {
+    fun logIn(email: String, pass: String): Single<AuthResult> {
         return firebaseAuth.signInWithEmailAndPassword(email, pass).toSingle()
     }
 
@@ -46,7 +45,7 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
         return firebaseAuth.rxSignOut()
     }
 
-    fun signUp(email: String, pass: String): Single<FirebaseUser> {
-        return firebaseAuth.rxCreateUserWithEmailAndPassword(email, pass)
+    fun signUp(email: String, pass: String): Single<AuthResult> {
+        return firebaseAuth.createUserWithEmailAndPassword(email, pass).toSingle()
     }
 }

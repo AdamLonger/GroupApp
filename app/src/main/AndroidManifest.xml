@@ -11,12 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".activities.RootActivity"/>
-        <activity android:name=".activities.SignUpActivity"/>
-        <activity android:name=".signin.SignInActivity">
+        <activity
+            android:name=".activities.RootActivity"
+            android:theme="@style/AppBaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
