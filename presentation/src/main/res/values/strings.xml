@@ -24,4 +24,6 @@
     <string name="message_error">ERROR</string>
 
     <string name="toast_user_created">User created!</string>
+
+    <string name="placeholder">placeholder</string>
 </resources>

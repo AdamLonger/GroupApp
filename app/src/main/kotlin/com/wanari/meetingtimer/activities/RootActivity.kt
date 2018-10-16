@@ -11,15 +11,16 @@ import com.wanari.meetingtimer.common.rx.Schedulers
 import com.wanari.meetingtimer.common.ui.BaseActivity
 import com.wanari.meetingtimer.common.ui.ForegroundManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
-import com.wanari.meetingtimer.navigation.NavigationEvent
-import com.wanari.meetingtimer.navigation.Navigator
-import com.wanari.meetingtimer.navigation.Screen
-import com.wanari.meetingtimer.navigation.ScreenManager
-import com.wanari.meetingtimer.navigation.applyTo
+import com.wanari.meetingtimer.common.utils.setVisiblity
+import com.wanari.meetingtimer.navigation.*
+import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
+import com.wanari.meetingtimer.presentation.signup.SignUpScreenFragment
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
+import kotlinx.android.synthetic.main.activity_root.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.lang.ref.WeakReference
+
 
 class RootActivity : BaseActivity() {
     private val screenManager by inject<ScreenManager>()
@@ -39,6 +40,25 @@ class RootActivity : BaseActivity() {
                 .observeOn(schedulers.ui())
                 .subscribe(this::navigate)
                 .disposeOnDestroy()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        rootNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.root_navigation_item_1 -> {
+                    //Navigate
+                }
+                R.id.root_navigation_item_2 -> {
+                    //Navigate
+                }
+                R.id.root_navigation_item_3 -> {
+                    //Navigate
+                }
+            }
+            true
+        }
     }
 
     override fun onBackPressed() {
@@ -74,6 +94,9 @@ class RootActivity : BaseActivity() {
                 add(R.id.rootContainer, fragment, FRAGMENT_TAG)
                 setReorderingAllowed(true)
             }.commitNowAllowingStateLoss()
+
+            rootNavigationView.setVisiblity(fragment !is LogInScreenFragment &&
+                    fragment !is SignUpScreenFragment)
         }
 
         currentScreenFragment = WeakReference(fragment)

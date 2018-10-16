@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/root_navigation_item_1"
+        android:enabled="true"
+        android:icon="@android:drawable/arrow_down_float"
+        android:title="@string/placeholder"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/root_navigation_item_2"
+        android:enabled="true"
+        android:icon="@android:drawable/arrow_down_float"
+        android:title="@string/placeholder"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/root_navigation_item_3"
+        android:enabled="true"
+        android:icon="@android:drawable/arrow_down_float"
+        android:title="@string/placeholder"
+        app:showAsAction="ifRoom"/>
+</menu>
