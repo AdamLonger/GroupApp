@@ -106,7 +106,6 @@
         android:layout_height="100dp"
         android:indeterminate="true"
         android:indeterminateTint="@color/colorPrimary"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
+        android:elevation="3dp"
         app:constraint_referenced_ids="login_progress_bar_fade,login_progress_bar"
         />
 

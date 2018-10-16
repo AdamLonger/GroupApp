@@ -31,6 +31,10 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
         return authChanged.map { it is Some }
     }
 
+    fun isAuthenticatedOnStartup(): Boolean {
+        return firebaseAuth.currentUser!=null
+    }
+
     fun getCurrentUser(): Observable<FirebaseUser> {
         return authChanged
                 .ofType<Some<FirebaseUser>>()

@@ -18,7 +18,7 @@ class LogInPresenter(initialState: LogInViewState, private val logInInteractor: 
         result.add(intent { view -> view.logIn() }
                 .flatMap { (email, pass) ->
                     logInInteractor.logIn(email, pass)
-                            .mapViewStateChange { LogInViewStateChanges.Initial() }
+                            .mapViewStateChange { LogInViewStateChanges.Forward() }
                             .onErrorReturn { error -> handleFirebaseError(error) }
                             .startWith(LogInViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())

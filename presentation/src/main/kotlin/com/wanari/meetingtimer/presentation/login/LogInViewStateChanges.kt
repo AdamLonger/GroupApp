@@ -1,6 +1,7 @@
 package com.wanari.meetingtimer.presentation.login
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.presentation.signup.SignUpViewState
 
 interface LogInViewStateChanges : ViewStateChange<LogInViewState> {
     class Initial : LogInViewStateChanges {
@@ -39,6 +40,20 @@ interface LogInViewStateChanges : ViewStateChange<LogInViewState> {
 
         override fun toString(): String {
             return "Error"
+        }
+    }
+
+    class Forward : LogInViewStateChanges {
+        override fun computeNewState(previousState: LogInViewState): LogInViewState {
+            return previousState.copy(
+                    loading = false,
+                    errorRes = null,
+                    forward = true
+            )
+        }
+
+        override fun toString(): String {
+            return "Forward"
         }
     }
 }

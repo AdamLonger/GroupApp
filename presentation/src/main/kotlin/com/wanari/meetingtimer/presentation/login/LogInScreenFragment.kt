@@ -9,7 +9,9 @@ import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.clear
 import com.wanari.meetingtimer.common.utils.isEmptyOrNull
 import com.wanari.meetingtimer.common.utils.setVisiblity
+import com.wanari.meetingtimer.navigation.NavigationOptions
 import com.wanari.meetingtimer.navigation.Navigator
+import com.wanari.meetingtimer.navigation.screens.NewsScreen
 import com.wanari.meetingtimer.navigation.screens.SignUpScreen
 import com.wanari.meetingtimer.presentation.R
 import io.reactivex.Observable
@@ -57,13 +59,15 @@ class LogInScreenFragment : ScreenFragment<LogInScreenView, LogInViewState>(), L
     override fun render(viewState: LogInViewState) {
         lockUI(viewState.loading)
         login_error_txv.setText(viewState.errorRes ?: R.string.emptyString)
+        if (viewState.forward) {
+            navigator.navigateTo(NewsScreen(), NavigationOptions(purgeStack = true))
+        }
     }
 
     private fun lockUI(lock: Boolean) {
         login_input_group.isEnabled = !lock
         login_error_txv.clear()
         login_progress_group.setVisiblity(lock)
-        if(lock)login_progress_group.bringToFront()
     }
 
     private fun hideVirtualKeyboard() {

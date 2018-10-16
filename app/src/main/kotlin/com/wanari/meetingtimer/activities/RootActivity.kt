@@ -13,8 +13,11 @@ import com.wanari.meetingtimer.common.ui.ForegroundManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.*
+import com.wanari.meetingtimer.navigation.screens.NewsScreen
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
+import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.signup.SignUpScreenFragment
+import data.firebase.AuthManager
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_root.*
 import org.koin.android.ext.android.inject
@@ -26,6 +29,7 @@ class RootActivity : BaseActivity() {
     private val screenManager by inject<ScreenManager>()
     private val schedulers by inject<Schedulers>()
     private val navigator by inject<Navigator>()
+    private val authManager by inject<AuthManager>()
 
     private var currentScreenFragment: WeakReference<out ScreenFragment<*, *>>? = null
 
@@ -47,13 +51,17 @@ class RootActivity : BaseActivity() {
 
         rootNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.root_navigation_item_1 -> {
+                R.id.root_navigation_item_news -> {
+                    if (currentScreenFragment?.get() !is NewsScreenFragment)
+                        navigator.navigateTo(NewsScreen())
+                }
+                R.id.root_navigation_item_user -> {
                     //Navigate
                 }
-                R.id.root_navigation_item_2 -> {
+                R.id.root_navigation_item_groups -> {
                     //Navigate
                 }
-                R.id.root_navigation_item_3 -> {
+                R.id.root_navigation_item_settings -> {
                     //Navigate
                 }
             }
@@ -106,7 +114,12 @@ class RootActivity : BaseActivity() {
 
     private fun handleIntent(intent: Intent) {
         if (!intent.hasExtra(EXTRA_SCREEN_KEY)) {
-            navigator.navigateToHome()
+            if (authManager.isAuthenticatedOnStartup()) {
+                navigator.navigateTo(NewsScreen(),
+                        NavigationOptions(purgeStack = true))
+            } else {
+                navigator.navigateToHome()
+            }
             return
         }
 

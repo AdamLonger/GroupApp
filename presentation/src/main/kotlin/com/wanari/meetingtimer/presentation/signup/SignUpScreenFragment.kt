@@ -73,7 +73,6 @@ class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>()
         signup_input_group.isEnabled = !lock
         signup_error_txv.clear()
         signup_progress_group.setVisiblity(lock)
-        if (lock) signup_progress_group.bringToFront()
     }
 
     private fun hideVirtualKeyboard() {

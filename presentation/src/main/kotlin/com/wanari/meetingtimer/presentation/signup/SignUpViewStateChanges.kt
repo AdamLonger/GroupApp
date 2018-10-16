@@ -42,7 +42,7 @@ interface SignUpViewStateChanges : ViewStateChange<SignUpViewState> {
         }
     }
 
-    class Forward() : SignUpViewStateChanges {
+    class Forward : SignUpViewStateChanges {
         override fun computeNewState(previousState: SignUpViewState): SignUpViewState {
             return previousState.copy(
                     loading = false,

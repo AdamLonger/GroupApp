@@ -3,21 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/root_navigation_item_1"
+        android:id="@+id/root_navigation_item_news"
         android:enabled="true"
-        android:icon="@android:drawable/arrow_down_float"
-        android:title="@string/placeholder"
+        android:icon="@drawable/ic_baseline_list"
+        android:title="@string/menu_news"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/root_navigation_item_2"
+        android:id="@+id/root_navigation_item_groups"
         android:enabled="true"
-        android:icon="@android:drawable/arrow_down_float"
-        android:title="@string/placeholder"
+        android:icon="@drawable/ic_baseline_group"
+        android:title="@string/menu_groups"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/root_navigation_item_3"
+        android:id="@+id/root_navigation_item_user"
         android:enabled="true"
-        android:icon="@android:drawable/arrow_down_float"
-        android:title="@string/placeholder"
+        android:icon="@drawable/ic_baseline_user"
+        android:title="@string/menu_user"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/root_navigation_item_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings"
+        android:title="@string/menu_settings"
         app:showAsAction="ifRoom"/>
 </menu>

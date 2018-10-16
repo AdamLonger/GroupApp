@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FragmentTransitionExample</string>
     <string name="emptyString">""</string>
-
+    <string name="placeholder">placeholder</string>
 
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
@@ -25,5 +25,10 @@
 
     <string name="toast_user_created">User created!</string>
 
-    <string name="placeholder">placeholder</string>
+    <string name="menu_news">News</string>
+    <string name="menu_groups">Group</string>
+    <string name="menu_user">User</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="log_out">Log Out</string>
 </resources>
