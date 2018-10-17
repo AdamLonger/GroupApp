@@ -13,9 +13,12 @@ import com.wanari.meetingtimer.common.ui.ForegroundManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.*
+import com.wanari.meetingtimer.navigation.screens.LogInScreen
 import com.wanari.meetingtimer.navigation.screens.NewsScreen
+import com.wanari.meetingtimer.navigation.screens.SettingsScreen
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
+import com.wanari.meetingtimer.presentation.settings.SettingsScreenFragment
 import com.wanari.meetingtimer.presentation.signup.SignUpScreenFragment
 import data.firebase.AuthManager
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
@@ -37,13 +40,24 @@ class RootActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
 
-        handleIntent(intent)
+        //handleIntent(intent)
 
         screenManager.dispatchNavigationEvent()
                 .subscribeOn(schedulers.computation())
                 .observeOn(schedulers.ui())
                 .subscribe(this::navigate)
                 .disposeOnDestroy()
+
+        authManager.isAuthenticated()
+                .subscribeOn(schedulers.computation())
+                .observeOn(schedulers.computation())
+                .subscribe {
+                    if (!it && (currentScreenFragment?.get() !is LogInScreenFragment ||
+                                    currentScreenFragment?.get() == null)) {
+                        navigator.navigateTo(LogInScreen(),
+                                NavigationOptions(purgeStack = true))
+                    }
+                }.disposeOnDestroy()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -53,7 +67,8 @@ class RootActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.root_navigation_item_news -> {
                     if (currentScreenFragment?.get() !is NewsScreenFragment)
-                        navigator.navigateTo(NewsScreen())
+                        navigator.navigateTo(NewsScreen(),
+                                NavigationOptions(purgeStack = true))
                 }
                 R.id.root_navigation_item_user -> {
                     //Navigate
@@ -62,7 +77,9 @@ class RootActivity : BaseActivity() {
                     //Navigate
                 }
                 R.id.root_navigation_item_settings -> {
-                    //Navigate
+                    if (currentScreenFragment?.get() !is SettingsScreenFragment)
+                        navigator.navigateTo(SettingsScreen(),
+                                NavigationOptions(purgeStack = true))
                 }
             }
             true
@@ -114,12 +131,7 @@ class RootActivity : BaseActivity() {
 
     private fun handleIntent(intent: Intent) {
         if (!intent.hasExtra(EXTRA_SCREEN_KEY)) {
-            if (authManager.isAuthenticatedOnStartup()) {
-                navigator.navigateTo(NewsScreen(),
-                        NavigationOptions(purgeStack = true))
-            } else {
-                navigator.navigateToHome()
-            }
+            navigator.navigateToHome()
             return
         }
 

@@ -14,6 +14,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.ofType
+import java.security.cert.PKIXRevocationChecker
 
 class AuthManager(private val firebaseAuth: FirebaseAuth) {
 
@@ -24,15 +25,11 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
             }
             firebaseAuth.addAuthStateListener(listener)
             emitter.setCancellable { firebaseAuth.removeAuthStateListener(listener) }
-        }.startWith(None).distinctUntilChanged().replayingShare()
+        }.startWith(firebaseAuth.currentUser.toOptional()).distinctUntilChanged().replayingShare()
     }
 
     fun isAuthenticated(): Observable<Boolean> {
         return authChanged.map { it is Some }
-    }
-
-    fun isAuthenticatedOnStartup(): Boolean {
-        return firebaseAuth.currentUser!=null
     }
 
     fun getCurrentUser(): Observable<FirebaseUser> {

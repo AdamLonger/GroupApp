@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FragmentTransitionExample</string>
+    <string name="app_name">GroupApp</string>
     <string name="emptyString">""</string>
     <string name="placeholder">placeholder</string>
 

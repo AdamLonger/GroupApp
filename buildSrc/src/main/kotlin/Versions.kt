@@ -36,4 +36,6 @@ object Versions {
     const val firebaseDatabase = "16.0.3"
     const val firebaseStorage = "16.0.3"
     const val firebaseAuth = "16.0.4"
+
+    const val androidXPaging = "1.0.1"
 }

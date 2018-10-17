@@ -25,6 +25,7 @@ dependencies {
     implementation project(':common')
 
     implementation Deps.kotlin
+    implementation Android.ArchitectureComponents.paging
 
     Rx.all.each { dep ->
         implementation dep
