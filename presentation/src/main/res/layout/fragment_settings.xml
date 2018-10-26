@@ -23,6 +23,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/settings_title_guide"/>
 
+    <EditText
+        android:id="@+id/exampleEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Example Text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exampleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/exampleButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/exampleEditText"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <android.support.constraint.Guideline
         android:id="@+id/settings_logout_guide"
         android:layout_width="0dp"

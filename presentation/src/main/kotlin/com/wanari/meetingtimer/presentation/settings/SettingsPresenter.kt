@@ -12,12 +12,20 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
     override fun prepareIntentObservables(): ArrayList<Observable<ViewStateChange<SettingsViewState>>> {
         val result = ArrayList<Observable<ViewStateChange<SettingsViewState>>>()
 
-
         result.add(intent { view -> view.logOut() }
                 .flatMap { _ ->
                     settingsInteractor.logOut()
                             .mapViewStateChange { SettingsViewStateChanges.Initial() }
                             .onErrorReturn { SettingsViewStateChanges.Error(R.string.message_error) }
+                            .subscribeOn(Schedulers.io())
+                })
+
+        result.add(intent { view -> view.saveSettings() }
+                .flatMap { data ->
+                    settingsInteractor.saveSettings(data)
+                            .mapViewStateChange { SettingsViewStateChanges.Initial() }
+                            .onErrorReturn { SettingsViewStateChanges.Error(R.string.message_error) }
+                            .startWith(SettingsViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
 

@@ -1,6 +1,6 @@
 package data.paging
 
-import android.arch.paging.ItemKeyedDataSource
+/*import android.arch.paging.ItemKeyedDataSource
 import io.reactivex.schedulers.Schedulers
 
 class NewsDataSource : ItemKeyedDataSource<String, News>() {
@@ -32,4 +32,4 @@ class NewsDataSource : ItemKeyedDataSource<String, News>() {
     override fun getKey(item: Animal): String {
         return item.objectKey ?: ""
     }
-}
+}*/

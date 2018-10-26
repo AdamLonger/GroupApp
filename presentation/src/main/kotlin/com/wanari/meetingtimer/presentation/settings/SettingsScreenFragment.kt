@@ -12,7 +12,9 @@ import com.wanari.meetingtimer.presentation.R
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_settings.*
+import model.SettingsObject
 import org.koin.android.ext.android.inject
+
 
 class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewState>(), SettingsScreenView {
     override val initialViewState = SettingsViewState()
@@ -21,6 +23,7 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
 
     private val navigator by inject<Navigator>()
     private val logOutSubject = PublishSubject.create<Any>()
+    private val saveSettingsSubject = PublishSubject.create<SettingsObject>()
 
     override fun getTitle(context: Context): String = "Settings Screen"
 
@@ -30,14 +33,23 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
         settings_logout_btn.setOnClickListener {
             logOutSubject.onNext(TRIGGER)
         }
+
+        exampleButton.setOnClickListener {
+            saveSettingsSubject.onNext(
+                    SettingsObject(
+                            exampleEditText.text.toString()
+                    )
+            )
+        }
     }
 
     override fun render(viewState: SettingsViewState) {
-        if(viewState.forward){
+        if (viewState.forward) {
             navigator.navigateTo(LogInScreen(),
                     NavigationOptions(purgeStack = true))
         }
     }
 
     override fun logOut(): Observable<Any> = logOutSubject
+    override fun saveSettings(): Observable<SettingsObject> = saveSettingsSubject
 }
