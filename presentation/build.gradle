@@ -36,6 +36,7 @@ dependencies {
 
     implementation Android.ArchitectureComponents.runtime
     implementation Android.ArchitectureComponents.extensions
+    implementation Android.ArchitectureComponents.paging
 
     implementation Deps.threeTen
 

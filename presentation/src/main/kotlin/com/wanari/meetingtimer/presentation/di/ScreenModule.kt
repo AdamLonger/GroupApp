@@ -27,4 +27,5 @@ val screenModule = module {
 
     declareScreen<SettingsScreen> { SettingsScreenFragment() }
     factory { SettingsPresenter(it[0], get()) }
+
 }

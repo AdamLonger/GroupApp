@@ -3,6 +3,7 @@ package com.wanari.meetingtimer.presentation.news
 import com.wanari.meetingtimer.common.mvi.BasePresenter
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
 import com.wanari.meetingtimer.presentation.R
+import com.wanari.meetingtimer.presentation.news.paging.NewsDataSource
 import exception.InvalidEmailException
 import exception.UserNotFoundException
 import exception.WrongPasswordException
@@ -14,6 +15,10 @@ class NewsPresenter(initialState: NewsViewState, private val newsInteractor: New
 
     override fun prepareIntentObservables(): ArrayList<Observable<ViewStateChange<NewsViewState>>> {
         val result = ArrayList<Observable<ViewStateChange<NewsViewState>>>()
+
+        result.add(Observable.just(NewsViewStateChanges.DataSourceLoaded(
+                NewsDataSource(newsInteractor)
+        )))
 
         return result
     }

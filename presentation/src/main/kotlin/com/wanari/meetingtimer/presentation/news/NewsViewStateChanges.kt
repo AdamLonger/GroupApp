@@ -1,13 +1,29 @@
 package com.wanari.meetingtimer.presentation.news
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.presentation.news.paging.NewsDataSource
 
 interface NewsViewStateChanges : ViewStateChange<NewsViewState> {
     class Initial : NewsViewStateChanges {
         override fun computeNewState(previousState: NewsViewState): NewsViewState {
             return previousState.copy(
                     loading = false,
-                    errorRes = null
+                    errorRes = null,
+                    dataSource = null
+            )
+        }
+
+        override fun toString(): String {
+            return "Initial"
+        }
+    }
+
+    class DataSourceLoaded(private val source:NewsDataSource) : NewsViewStateChanges {
+        override fun computeNewState(previousState: NewsViewState): NewsViewState {
+            return previousState.copy(
+                    loading = false,
+                    errorRes = null,
+                    dataSource = source
             )
         }
 
