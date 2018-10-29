@@ -38,4 +38,5 @@ object Versions {
     const val firebaseAuth = "16.0.4"
 
     const val androidXPaging = "1.0.1"
+
 }

@@ -14,7 +14,7 @@ import io.reactivex.subjects.PublishSubject
 import model.NewsObject
 
 class NewsManager(private val auth: FirebaseAuth, private val database: FirebaseDatabase) :
-        DatabaseManager(auth, database){
+        DatabaseManager(auth, database) {
 
     private val databaseRef = database.reference
     private val invalidationSubject = PublishSubject.create<Any>()
@@ -61,6 +61,13 @@ class NewsManager(private val auth: FirebaseAuth, private val database: Firebase
         return RxFirebaseDatabase.data(databaseRef.child(newsPath()).orderByKey().endAt(key).limitToLast(count))
                 .map {
                     it.getArrayValue(NewsObject::class.java).dropLast(1)
+                }
+    }
+
+    fun getItem(key: String): Single<NewsObject> {
+        return RxFirebaseDatabase.data(databaseRef.child(newsPath(key)))
+                .map {
+                    it.getValue(NewsObject::class.java)
                 }
     }
 }

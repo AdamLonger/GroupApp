@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wanari.meetingtimer.presentation.R
-import model.NewsObject
-
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_adapter_news.view.*
+import model.NewsObject
 
 class NewsAdapter constructor(
         context: Context
@@ -23,10 +23,12 @@ class NewsAdapter constructor(
 
             override fun areContentsTheSame(
                     oldItem: NewsObject?,
-                    newItem: NewsObject?): Boolean = oldItem?.description == newItem?.description
+                    newItem: NewsObject?): Boolean = (oldItem?.text == newItem?.text) &&
+                    (oldItem?.title == newItem?.title)
         }) {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private var newsClickSubject = PublishSubject.create<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view = mInflater.inflate(R.layout.item_adapter_news, parent, false)
@@ -35,12 +37,18 @@ class NewsAdapter constructor(
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news = getItem(position)
-        holder.title?.text = news?.name
-        holder.text?.text = news?.description
+        holder.title?.text = news?.title
+        holder.text?.text = news?.text
+
+        news?.objectKey?.let { key ->
+            holder.itemView.setOnClickListener { newsClickSubject.onNext(key) }
+        }
     }
 
     class NewsViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         var title = itemView?.news_item_title
         var text = itemView?.news_item_text
     }
+
+    fun getNewsClickSubject(): PublishSubject<String> = newsClickSubject
 }

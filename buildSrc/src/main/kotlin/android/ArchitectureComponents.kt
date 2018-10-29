@@ -1,5 +1,6 @@
 package android
 
+import Versions
 import Versions.androidXPaging
 
 object ArchitectureComponents {

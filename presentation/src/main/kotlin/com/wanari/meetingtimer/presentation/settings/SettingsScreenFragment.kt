@@ -19,6 +19,7 @@ import org.koin.android.ext.android.inject
 class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewState>(), SettingsScreenView {
     override val initialViewState = SettingsViewState()
     override val presenter by injectPresenter<SettingsPresenter>()
+    override val hasToolbar = true
     override val layoutRes = R.layout.fragment_settings
 
     private val navigator by inject<Navigator>()

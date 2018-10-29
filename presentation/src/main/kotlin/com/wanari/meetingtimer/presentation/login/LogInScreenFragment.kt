@@ -22,6 +22,7 @@ import org.koin.android.ext.android.inject
 class LogInScreenFragment : ScreenFragment<LogInScreenView, LogInViewState>(), LogInScreenView {
     override val initialViewState = LogInViewState()
     override val presenter by injectPresenter<LogInPresenter>()
+    override val hasToolbar = false
     override val layoutRes = R.layout.fragment_log_in
 
     private val navigator by inject<Navigator>()

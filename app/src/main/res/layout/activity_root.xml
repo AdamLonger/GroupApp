@@ -6,6 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/rootErrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/DarkGray"
+        android:elevation="1dp"
+        android:gravity="center"
+        android:padding="@dimen/activity_root_error_padding"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ERROR"/>
+
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,7 +28,7 @@
         app:layout_constraintBottom_toTopOf="@+id/rootNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rootErrorTextView"
         tools:context=".activities.RootActivity"
         tools:ignore="MergeRootFrame,Overdraw"/>
 

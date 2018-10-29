@@ -1,6 +1,6 @@
 package model
 
 data class NewsObject(
-        val name: String? = null,
-        val description: String? = null
+        val title: String? = null,
+        val text: String? = null
 ) : FirebaseObject()

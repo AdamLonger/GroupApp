@@ -8,22 +8,7 @@ interface NewsViewStateChanges : ViewStateChange<NewsViewState> {
         override fun computeNewState(previousState: NewsViewState): NewsViewState {
             return previousState.copy(
                     loading = false,
-                    errorRes = null,
-                    dataSource = null
-            )
-        }
-
-        override fun toString(): String {
-            return "Initial"
-        }
-    }
-
-    class DataSourceLoaded(private val source:NewsDataSource) : NewsViewStateChanges {
-        override fun computeNewState(previousState: NewsViewState): NewsViewState {
-            return previousState.copy(
-                    loading = false,
-                    errorRes = null,
-                    dataSource = source
+                    errorRes = null
             )
         }
 

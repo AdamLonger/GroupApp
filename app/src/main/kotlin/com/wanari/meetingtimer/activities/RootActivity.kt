@@ -2,14 +2,17 @@ package com.wanari.meetingtimer.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.support.transition.TransitionInflater
 import com.wanari.meetingtimer.R
 import com.wanari.meetingtimer.common.di.createScreen
 import com.wanari.meetingtimer.common.rx.Schedulers
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.BaseActivity
-import com.wanari.meetingtimer.common.ui.ForegroundManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.*
@@ -19,9 +22,10 @@ import com.wanari.meetingtimer.navigation.screens.SettingsScreen
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.settings.SettingsScreenFragment
-import com.wanari.meetingtimer.presentation.signup.SignUpScreenFragment
+import com.wanari.meetingtimer.utils.reciever.NetworkChangeReceiver
 import data.firebase.AuthManager
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_root.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -35,6 +39,7 @@ class RootActivity : BaseActivity() {
     private val authManager by inject<AuthManager>()
 
     private var currentScreenFragment: WeakReference<out ScreenFragment<*, *>>? = null
+    private var networkChangeReceiver: NetworkChangeReceiver = NetworkChangeReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +62,14 @@ class RootActivity : BaseActivity() {
                         navigator.navigateTo(LogInScreen(),
                                 NavigationOptions(purgeStack = true))
                     }
+                }.disposeOnDestroy()
+
+        AppStateManager.getNetworkState()
+                .subscribeOn(schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (!it) rootErrorTextView.text = getString(R.string.error_no_internet)
+                    rootErrorTextView.setVisiblity(!it)
                 }.disposeOnDestroy()
     }
 
@@ -84,6 +97,8 @@ class RootActivity : BaseActivity() {
             }
             true
         }
+
+        navigator.navigateTo(NewsScreen(), NavigationOptions(purgeStack = true))
     }
 
     override fun onBackPressed() {
@@ -120,8 +135,7 @@ class RootActivity : BaseActivity() {
                 setReorderingAllowed(true)
             }.commitNowAllowingStateLoss()
 
-            rootNavigationView.setVisiblity(fragment !is LogInScreenFragment &&
-                    fragment !is SignUpScreenFragment)
+            rootNavigationView.setVisiblity(fragment.hasToolbar)
         }
 
         currentScreenFragment = WeakReference(fragment)
@@ -149,6 +163,12 @@ class RootActivity : BaseActivity() {
         super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase))
     }
 
+    private fun isNetworkAvailable(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
+    }
+
     companion object {
         private const val FRAGMENT_TAG = "SCREEN_FRAGMENT_TAG"
         private const val EXTRA_SCREEN_KEY = "EXTRA_SCREEN_KEY"
@@ -156,11 +176,16 @@ class RootActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        ForegroundManager.setState(true)
+        AppStateManager.setForegroundState(true)
+
+        AppStateManager.setNetworkState(isNetworkAvailable())
+        val intentFilter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(networkChangeReceiver, intentFilter)
     }
 
     override fun onPause() {
         super.onPause()
-        ForegroundManager.setState(false)
+        AppStateManager.setForegroundState(false)
+        unregisterReceiver(networkChangeReceiver)
     }
 }

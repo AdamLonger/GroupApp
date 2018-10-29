@@ -10,7 +10,7 @@ abstract class ScreenFragment<V : MviView<VS>, VS : Any> : MviBaseFragment<V, VS
     protected val screen: Screen by lazy {
         arguments
                 ?.let { it[ARG_SCREEN] as? Screen }
-                ?: throw IllegalStateException("Screen not found in Bundle.")
+            ?: throw IllegalStateException("Screen not found in Bundle.")
     }
 
     @CallSuper

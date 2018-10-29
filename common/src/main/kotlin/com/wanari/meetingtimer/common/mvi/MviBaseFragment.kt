@@ -19,6 +19,7 @@ abstract class MviBaseFragment<V : MviView<VS>, VS : Any> : MviFragment<V, MviPr
 
     abstract val initialViewState: VS
     abstract val presenter: MviPresenter<V, VS>
+    abstract val hasToolbar: Boolean
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(layoutRes, container, false)

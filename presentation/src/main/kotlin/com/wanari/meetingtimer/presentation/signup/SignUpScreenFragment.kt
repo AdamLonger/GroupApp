@@ -22,6 +22,7 @@ import org.koin.android.ext.android.inject
 class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>(), SignUpScreenView {
     override val initialViewState = SignUpViewState()
     override val presenter by injectPresenter<SignUpPresenter>()
+    override val hasToolbar = false
     override val layoutRes = R.layout.fragment_sign_up
 
     private val navigator by inject<Navigator>()

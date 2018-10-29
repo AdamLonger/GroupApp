@@ -2,6 +2,7 @@
     <string name="app_name">GroupApp</string>
     <string name="emptyString">""</string>
     <string name="placeholder">placeholder</string>
+    <string name="error_no_internet">Error: Internet is not available!</string>
 
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
