@@ -36,4 +36,6 @@ interface ScreenManager {
      * @return a flow of navigation events.
      */
     fun dispatchNavigationEvent(): Flowable<NavigationEvent>
+
+    fun getStackSite():Int
 }

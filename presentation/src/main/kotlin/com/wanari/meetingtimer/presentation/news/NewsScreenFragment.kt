@@ -34,7 +34,13 @@ class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), News
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+    }
 
+    override fun render(viewState: NewsViewState) {
+    }
+
+    override fun onResume() {
+        super.onResume()
         disposables.add(newsAdapter.getNewsClickSubject()
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
@@ -44,12 +50,9 @@ class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), News
         )
     }
 
-    override fun render(viewState: NewsViewState) {
-    }
-
-    override fun onDestroy() {
+    override fun onPause() {
         disposables.clear()
-        super.onDestroy()
+        super.onPause()
     }
 
     private fun initRecyclerView() {

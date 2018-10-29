@@ -61,4 +61,6 @@ class FragmentScreenManager(override val defaultScreen: Screen) : ScreenManager 
     override fun dispatchNavigationEvent(): Flowable<NavigationEvent> {
         return navigationEventSubject.toFlowable(BackpressureStrategy.BUFFER)
     }
+
+    override fun getStackSite(): Int = screenStack.size
 }

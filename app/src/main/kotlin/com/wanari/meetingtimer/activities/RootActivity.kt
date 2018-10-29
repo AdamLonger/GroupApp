@@ -71,6 +71,10 @@ class RootActivity : BaseActivity() {
                     if (!it) rootErrorTextView.text = getString(R.string.error_no_internet)
                     rootErrorTextView.setVisiblity(!it)
                 }.disposeOnDestroy()
+
+        rootBackButton.setOnClickListener {
+            navigator.navigateBack()
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -139,6 +143,7 @@ class RootActivity : BaseActivity() {
         }
 
         currentScreenFragment = WeakReference(fragment)
+        rootToolbar.setVisiblity(screenManager.getStackSite() > 1)
 
         Timber.d("Navigate to: ${event.screen}")
     }

@@ -5,8 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="GrayAlpha88">#88DDDDDD</color>
-    <color name="DarkGray">#444444</color>
+    <color name="grayAlpha88">#88DDDDDD</color>
+    <color name="darkGray">#444444</color>
+    <color name="lightGray">#777777</color>
     <color name="extraLightGray">#DDDDDD</color>
     <color name="red">#DD0000</color>
     <color name="green">#00AA00</color>

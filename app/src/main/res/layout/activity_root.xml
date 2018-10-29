@@ -6,22 +6,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/rootToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/rootBackButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_baseline_chevron_left"
+            android:tint="@color/lightGray"/>
+
+        <View
+            android:id="@+id/rootToolbarSpacer"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/rootBackButton"
+            android:background="@color/lightGray"/>
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/rootErrorTextView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/DarkGray"
+        android:background="@color/darkGray"
         android:elevation="1dp"
         android:gravity="center"
         android:padding="@dimen/activity_root_error_padding"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rootToolbar"
         tools:text="ERROR"/>
 
     <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/rootContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
