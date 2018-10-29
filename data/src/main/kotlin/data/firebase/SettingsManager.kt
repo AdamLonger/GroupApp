@@ -1,15 +1,14 @@
 package data.firebase
 
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import data.utils.settingsPath
 import data.utils.toMap
 import io.reactivex.Completable
 import model.SettingsObject
 
-class SettingsManager(private val auth: FirebaseAuth, private val database: FirebaseDatabase) :
-        DatabaseManager(auth, database) {
+class SettingsManager(authManager: AuthManager, private val database: FirebaseDatabase) :
+        DatabaseManager(authManager, database) {
 
     private val databaseRef = database.reference
 

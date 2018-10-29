@@ -6,6 +6,22 @@
     android:layout_height="match_parent">
 
     <android.support.constraint.Guideline
+        android:id="@+id/settings_start_guide"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1"
+        />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/settings_end_guide"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9"
+        />
+
+    <android.support.constraint.Guideline
         android:id="@+id/settings_title_guide"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -19,45 +35,84 @@
         android:text="@string/menu_settings"
         android:textAlignment="center"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"
+        app:layout_constraintStart_toStartOf="@+id/settings_start_guide"
         app:layout_constraintTop_toTopOf="@+id/settings_title_guide"/>
 
-    <EditText
-        android:id="@+id/exampleEditText"
+
+    <LinearLayout
+        android:id="@+id/settings_profile_module_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Example Text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/exampleButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/settings_save_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"
+        app:layout_constraintStart_toStartOf="@+id/settings_start_guide"
+        app:layout_constraintTop_toBottomOf="@+id/settings_title">
+
+        <TextView
+            android:id="@+id/settings_name_txf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/settings_name_text"/>
+
+        <EditText
+            android:id="@+id/settings_name_etx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/settings_name_text"/>
+
+        <TextView
+            android:id="@+id/settings_birth_txf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/settings_birth_text"/>
+
+        <EditText
+            android:id="@+id/settings_birth_etx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/settings_birth_text"/>
+
+        <TextView
+            android:id="@+id/settings_sex_txf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/settings_sex_text"/>
+
+        <EditText
+            android:id="@+id/settings_sex_etx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/settings_sex_text"/>
+
+
+    </LinearLayout>
+
 
     <Button
-        android:id="@+id/exampleButton"
-        android:layout_width="0dp"
+        android:id="@+id/settings_save_btn"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/exampleEditText"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/settings_logout_guide"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/settings_save_btn_text"
+        app:layout_constraintBottom_toTopOf="@id/settings_logout_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"
+        app:layout_constraintStart_toEndOf="@+id/settings_start_guide"/>
 
     <Button
         android:id="@+id/settings_logout_btn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/log_out"
-        app:layout_constraintBottom_toBottomOf="@+id/settings_logout_guide"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"
+        app:layout_constraintStart_toStartOf="@+id/settings_start_guide"/>
 
 </android.support.constraint.ConstraintLayout>

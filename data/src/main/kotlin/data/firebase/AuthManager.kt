@@ -5,7 +5,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jakewharton.rx.replayingShare
-import com.wanari.meetingtimer.common.utils.None
 import com.wanari.meetingtimer.common.utils.Optional
 import com.wanari.meetingtimer.common.utils.Some
 import com.wanari.meetingtimer.common.utils.toOptional
@@ -14,7 +13,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.ofType
-import java.security.cert.PKIXRevocationChecker
 
 class AuthManager(private val firebaseAuth: FirebaseAuth) {
 
@@ -36,6 +34,10 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
         return authChanged
                 .ofType<Some<FirebaseUser>>()
                 .map { it.value }
+    }
+
+    fun getCurrentUserBlocking():FirebaseUser?{
+        return firebaseAuth.currentUser
     }
 
     fun logIn(email: String, pass: String): Single<AuthResult> {

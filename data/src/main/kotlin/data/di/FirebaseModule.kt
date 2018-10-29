@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import data.firebase.AuthManager
 import data.firebase.NewsManager
+import data.firebase.ProfileManager
 import data.firebase.SettingsManager
 import org.koin.dsl.module.module
 
@@ -22,4 +23,5 @@ val firebaseModule = module {
     single { AuthManager(get()) }
     single { SettingsManager(get(), get()) }
     single { NewsManager(get(), get()) }
+    single { ProfileManager(get(), get()) }
 }

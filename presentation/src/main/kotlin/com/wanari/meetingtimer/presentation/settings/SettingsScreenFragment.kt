@@ -35,13 +35,13 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
             logOutSubject.onNext(TRIGGER)
         }
 
-        exampleButton.setOnClickListener {
-            saveSettingsSubject.onNext(
-                    SettingsObject(
-                            exampleEditText.text.toString()
-                    )
-            )
-        }
+//        exampleButton.setOnClickListener {
+//            saveSettingsSubject.onNext(
+//                    SettingsObject(
+//                            exampleEditText.text.toString()
+//                    )
+//            )
+//        }
     }
 
     override fun render(viewState: SettingsViewState) {

@@ -9,5 +9,5 @@ val dataModule = module {
     single { DefaultSignUpInteractor(get(), get()) as SignUpInteractor }
     single { DefaultNewsInteractor(get()) as NewsInteractor }
     single { DefaultNewsPageInteractor(get()) as NewsPageInteractor }
-    single { DefaultSettingsInteractor(get(), get()) as SettingsInteractor }
+    single { DefaultSettingsInteractor(get(), get(), get()) as SettingsInteractor }
 }
