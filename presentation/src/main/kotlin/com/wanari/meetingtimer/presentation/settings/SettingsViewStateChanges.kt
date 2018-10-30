@@ -1,12 +1,14 @@
 package com.wanari.meetingtimer.presentation.settings
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.presentation.model.ProfileObject
 
 interface SettingsViewStateChanges : ViewStateChange<SettingsViewState> {
     class Initial : SettingsViewStateChanges {
         override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = null
             )
         }
@@ -20,6 +22,7 @@ interface SettingsViewStateChanges : ViewStateChange<SettingsViewState> {
         override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
             return previousState.copy(
                     loading = true,
+                    uiLocked = true,
                     errorRes = null
             )
         }
@@ -33,12 +36,40 @@ interface SettingsViewStateChanges : ViewStateChange<SettingsViewState> {
         override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = errorRes
             )
         }
 
         override fun toString(): String {
             return "Error"
+        }
+    }
+
+    class ProfileLoaded(private val profileObject: ProfileObject) : SettingsViewStateChanges {
+        override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
+            return previousState.copy(
+                    profile = profileObject,
+                    uiLocked = false,
+                    loading = false,
+                    errorRes = null
+            )
+        }
+
+        override fun toString(): String {
+            return "ProfileLoaded"
+        }
+    }
+
+    class LockUI(private val locked:Boolean) : SettingsViewStateChanges {
+        override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
+            return previousState.copy(
+                    uiLocked = locked
+            )
+        }
+
+        override fun toString(): String {
+            return "LockUI"
         }
     }
 

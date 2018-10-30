@@ -1,4 +1,4 @@
-package com.wanari.meetingtimer.common.utils
+package util
 
 sealed class Optional<out T : Any> {
     @JvmSynthetic

@@ -6,11 +6,12 @@ import data.firebase.SettingsManager
 import interactor.SettingsInteractor
 import io.reactivex.Completable
 import io.reactivex.Observable
-import model.ProfileObject
+import model.ProfileDataModel
 import model.SettingsObject
+import util.Optional
 
 class DefaultSettingsInteractor(private val authManager: AuthManager,
-                                private val profilManager: ProfileManager,
+                                private val profileManager: ProfileManager,
                                 private val settingsManager: SettingsManager) : SettingsInteractor {
 
     override fun logOut(): Completable {
@@ -18,19 +19,15 @@ class DefaultSettingsInteractor(private val authManager: AuthManager,
                 .doOnComplete { settingsManager.databaseGoOffline() }
     }
 
-    override fun saveSettings(data: SettingsObject): Completable {
-        return settingsManager.saveSettings(data)
+    override fun loadProfile(): Observable<Optional<ProfileDataModel>> {
+        return profileManager.loadProfile()
     }
 
-    override fun loadProfile(): Observable<ProfileObject> {
-        return profilManager.getProfile()
-                .map {
-                    if (it.isNotEmpty()) {
-                        it.last().toWeight()?.let {
-                            return@map Optional(it)
-                        }
-                    }
-                    return@map Optional(null)
-                }
+    override fun saveProfile(data: ProfileDataModel): Completable {
+        return profileManager.saveProfile(data)
+    }
+
+    override fun saveSettings(data: SettingsObject): Completable {
+        return settingsManager.saveSettings(data)
     }
 }

@@ -3,13 +3,17 @@ package data.utils
 import data.firebase.DatabaseManager
 
 fun DatabaseManager.userPath(path: String = ""): String {
-    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/userdata/$path" } ?: ""
+    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/$path" } ?: ""
 }
 
 fun DatabaseManager.settingsPath(path: String = ""): String {
-    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/userdata/$path" } ?: ""
+    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/settings/$path" } ?: ""
 }
 
 fun DatabaseManager.newsPath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "news/$path" } ?: ""
+}
+
+fun DatabaseManager.profilePath(path: String = ""): String {
+    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/profile/$path" } ?: ""
 }

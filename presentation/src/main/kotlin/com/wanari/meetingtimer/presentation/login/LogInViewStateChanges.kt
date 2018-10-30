@@ -1,13 +1,13 @@
 package com.wanari.meetingtimer.presentation.login
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
-import com.wanari.meetingtimer.presentation.signup.SignUpViewState
 
 interface LogInViewStateChanges : ViewStateChange<LogInViewState> {
     class Initial : LogInViewStateChanges {
         override fun computeNewState(previousState: LogInViewState): LogInViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = null
             )
         }
@@ -21,6 +21,7 @@ interface LogInViewStateChanges : ViewStateChange<LogInViewState> {
         override fun computeNewState(previousState: LogInViewState): LogInViewState {
             return previousState.copy(
                     loading = true,
+                    uiLocked = true,
                     errorRes = null
             )
         }
@@ -34,12 +35,25 @@ interface LogInViewStateChanges : ViewStateChange<LogInViewState> {
         override fun computeNewState(previousState: LogInViewState): LogInViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = errorRes
             )
         }
 
         override fun toString(): String {
             return "Error"
+        }
+    }
+
+    class LockUI(private val locked: Boolean) : LogInViewStateChanges {
+        override fun computeNewState(previousState: LogInViewState): LogInViewState {
+            return previousState.copy(
+                    uiLocked = locked
+            )
+        }
+
+        override fun toString(): String {
+            return "LockUI"
         }
     }
 

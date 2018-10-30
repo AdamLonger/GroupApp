@@ -133,13 +133,4 @@
         app:constraint_referenced_ids="signup_progress_bar_fade,signup_progress_bar"
         />
 
-    <android.support.constraint.Group
-        android:id="@+id/signup_input_group"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:constraint_referenced_ids="signup_email_etx,
-        signup_password_etx, signup_confirm_password_etx,
-        signup_login_btn, signup_signup_btn"
-        />
-
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.wanari.meetingtimer.presentation.signup
 
 import com.wanari.meetingtimer.common.mvi.BasePresenter
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.presentation.R
 import exception.EmailAlreadyInUseException
 import exception.InvalidEmailException
@@ -23,6 +24,13 @@ class SignUpPresenter(initialState: SignUpViewState, private val signUpInteracto
                             .startWith(SignUpViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
+
+        result.add(AppStateManager.getNetworkState()
+                .toObservable()
+                .mapViewStateChange {
+                    SignUpViewStateChanges.LockUI(!it) }
+                .onErrorReturn { SignUpViewStateChanges.Error(R.string.message_error) }
+                .subscribeOn(Schedulers.io()))
 
         return result
     }

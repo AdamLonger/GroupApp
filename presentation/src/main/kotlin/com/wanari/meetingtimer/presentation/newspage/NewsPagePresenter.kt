@@ -2,6 +2,7 @@ package com.wanari.meetingtimer.presentation.newspage
 
 import com.wanari.meetingtimer.common.mvi.BasePresenter
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.presentation.R
 import interactor.NewsPageInteractor
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +17,7 @@ class NewsPagePresenter(initialState: NewsPageViewState, private val interactor:
                 .flatMap { key ->
                     interactor.getNewsContent(key)
                             .mapViewStateChange { NewsPageViewStateChanges.DataLoaded(it) }
-                            .onErrorReturn { error -> NewsPageViewStateChanges.Error(0) }
+                            .onErrorReturn { error -> NewsPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(NewsPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })

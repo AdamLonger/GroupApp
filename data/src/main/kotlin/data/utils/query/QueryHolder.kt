@@ -1,4 +1,4 @@
-package data.utils.Query
+package data.utils.query
 
 import data.firebase.DatabaseManager
 import io.reactivex.Observable

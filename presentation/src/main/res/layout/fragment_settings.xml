@@ -75,22 +75,22 @@
             android:id="@+id/settings_birth_etx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
             android:hint="@string/settings_birth_text"/>
 
         <TextView
-            android:id="@+id/settings_sex_txf"
+            android:id="@+id/settings_gender_txf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/settings_sex_text"/>
+            android:text="@string/settings_gender_text"/>
 
         <EditText
-            android:id="@+id/settings_sex_etx"
+            android:id="@+id/settings_gender_etx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/settings_sex_text"/>
-
-
+            android:focusableInTouchMode="false"
+            android:hint="@string/settings_gender_text"/>
     </LinearLayout>
 
 

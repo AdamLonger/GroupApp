@@ -36,5 +36,5 @@
     <string name="settings_save_btn_text">Save</string>
     <string name="settings_name_text">Name</string>
     <string name="settings_birth_text">Birth Date</string>
-    <string name="settings_sex_text">Sex</string>
+    <string name="settings_gender_text">Gender</string>
 </resources>

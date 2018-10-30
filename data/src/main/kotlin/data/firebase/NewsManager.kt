@@ -1,7 +1,6 @@
 package data.firebase
 
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,8 +12,8 @@ import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import model.NewsObject
 
-class NewsManager(private val auth: FirebaseAuth, private val database: FirebaseDatabase) :
-        DatabaseManager(auth, database) {
+class NewsManager(authManager: AuthManager, private val database: FirebaseDatabase) :
+        DatabaseManager(authManager, database) {
 
     private val databaseRef = database.reference
     private val invalidationSubject = PublishSubject.create<Any>()

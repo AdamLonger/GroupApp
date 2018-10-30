@@ -5,9 +5,9 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jakewharton.rx.replayingShare
-import com.wanari.meetingtimer.common.utils.Optional
-import com.wanari.meetingtimer.common.utils.Some
-import com.wanari.meetingtimer.common.utils.toOptional
+import util.Optional
+import util.Some
+import util.toOptional
 import data.utils.toSingle
 import io.reactivex.Completable
 import io.reactivex.Observable

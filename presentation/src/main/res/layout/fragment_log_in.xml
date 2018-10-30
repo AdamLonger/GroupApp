@@ -115,18 +115,9 @@
         android:id="@+id/login_progress_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
         android:elevation="3dp"
+        android:visibility="invisible"
         app:constraint_referenced_ids="login_progress_bar_fade,login_progress_bar"
         />
-
-    <android.support.constraint.Group
-        android:id="@+id/login_input_group"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:constraint_referenced_ids="login_email_etx,
-        login_password_etx,login_login_btn,login_signup_btn"
-        />
-
 
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.wanari.meetingtimer.presentation.signup
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -9,6 +10,7 @@ import android.widget.Toast
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.clear
 import com.wanari.meetingtimer.common.utils.isEmptyOrNull
+import com.wanari.meetingtimer.common.utils.lock
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.NavigationOptions
 import com.wanari.meetingtimer.navigation.Navigator
@@ -58,10 +60,18 @@ class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>()
     }
 
     override fun render(viewState: SignUpViewState) {
-        lockUI(viewState.loading)
+        viewState.uiLocked.let {
+            signup_email_etx.lock(it, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+            signup_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            signup_confirm_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            signup_signup_btn.isClickable = !it
+        }
+
+        handleLoading(viewState.loading)
+
         signup_error_txv.setText(viewState.errorRes ?: R.string.emptyString)
         if (viewState.forward) {
-            navigator.navigateBackTo(LogInScreen(), NavigationOptions(purgeStack = true))
+            navigator.navigateTo(LogInScreen(), NavigationOptions(purgeStack = true))
             Toast.makeText(
                     context,
                     resources.getString(R.string.toast_user_created),
@@ -70,8 +80,7 @@ class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>()
         }
     }
 
-    private fun lockUI(lock: Boolean) {
-        signup_input_group.isEnabled = !lock
+    private fun handleLoading(lock: Boolean) {
         signup_error_txv.clear()
         signup_progress_group.setVisiblity(lock)
     }

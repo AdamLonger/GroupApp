@@ -2,12 +2,14 @@ package com.wanari.meetingtimer.presentation.login
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.clear
 import com.wanari.meetingtimer.common.utils.isEmptyOrNull
+import com.wanari.meetingtimer.common.utils.lock
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.NavigationOptions
 import com.wanari.meetingtimer.navigation.Navigator
@@ -53,20 +55,26 @@ class LogInScreenFragment : ScreenFragment<LogInScreenView, LogInViewState>(), L
         }
 
         login_signup_btn.setOnClickListener {
-            navigator.navigateTo(SignUpScreen())
+            navigator.navigateTo(SignUpScreen(), NavigationOptions(purgeStack = true))
         }
     }
 
     override fun render(viewState: LogInViewState) {
-        lockUI(viewState.loading)
+        viewState.uiLocked.let {
+            login_email_etx.lock(it, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+            login_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            login_login_btn.isClickable = !it
+        }
+
+        handleLoading(viewState.loading)
+
         login_error_txv.setText(viewState.errorRes ?: R.string.emptyString)
         if (viewState.forward) {
             navigator.navigateTo(NewsScreen(), NavigationOptions(purgeStack = true))
         }
     }
 
-    private fun lockUI(lock: Boolean) {
-        login_input_group.isEnabled = !lock
+    private fun handleLoading(lock: Boolean) {
         login_error_txv.clear()
         login_progress_group.setVisiblity(lock)
     }

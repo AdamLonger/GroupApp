@@ -2,6 +2,7 @@ package com.wanari.meetingtimer.presentation.login
 
 import com.wanari.meetingtimer.common.mvi.BasePresenter
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.presentation.R
 import exception.InvalidEmailException
 import exception.UserNotFoundException
@@ -23,6 +24,14 @@ class LogInPresenter(initialState: LogInViewState, private val logInInteractor: 
                             .startWith(LogInViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
+
+        result.add(AppStateManager.getNetworkState()
+                .toObservable()
+                .mapViewStateChange {
+                    LogInViewStateChanges.LockUI(!it)
+                }
+                .onErrorReturn { LogInViewStateChanges.Error(R.string.message_error) }
+                .subscribeOn(Schedulers.io()))
 
         return result
     }

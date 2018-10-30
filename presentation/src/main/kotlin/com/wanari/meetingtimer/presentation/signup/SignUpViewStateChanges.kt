@@ -7,6 +7,7 @@ interface SignUpViewStateChanges : ViewStateChange<SignUpViewState> {
         override fun computeNewState(previousState: SignUpViewState): SignUpViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = null
             )
         }
@@ -20,6 +21,7 @@ interface SignUpViewStateChanges : ViewStateChange<SignUpViewState> {
         override fun computeNewState(previousState: SignUpViewState): SignUpViewState {
             return previousState.copy(
                     loading = true,
+                    uiLocked = true,
                     errorRes = null
             )
         }
@@ -33,12 +35,25 @@ interface SignUpViewStateChanges : ViewStateChange<SignUpViewState> {
         override fun computeNewState(previousState: SignUpViewState): SignUpViewState {
             return previousState.copy(
                     loading = false,
+                    uiLocked = false,
                     errorRes = errorRes
             )
         }
 
         override fun toString(): String {
             return "Error"
+        }
+    }
+
+    class LockUI(private val locked:Boolean) : SignUpViewStateChanges {
+        override fun computeNewState(previousState: SignUpViewState): SignUpViewState {
+            return previousState.copy(
+                    uiLocked = locked
+            )
+        }
+
+        override fun toString(): String {
+            return "LockUI"
         }
     }
 
