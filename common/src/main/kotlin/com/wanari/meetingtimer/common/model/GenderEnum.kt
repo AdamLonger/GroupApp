@@ -16,11 +16,10 @@ fun GenderEnum.getValue(context: Context): String? {
     }
 }
 
-fun GenderEnum.getStringRes(): Int? {
+fun GenderEnum.getStringRes(): Int {
     return when (this) {
         GenderEnum.Male -> R.string.male_text
         GenderEnum.Female -> R.string.female_text
-        else -> null
     }
 }
 

@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.clear
 import com.wanari.meetingtimer.common.utils.isEmptyOrNull
@@ -61,10 +62,11 @@ class LogInScreenFragment : ScreenFragment<LogInScreenView, LogInViewState>(), L
 
     override fun render(viewState: LogInViewState) {
         viewState.uiLocked.let {
-            login_email_etx.lock(it, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-            login_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            login_email_etx.lock(it)
+            login_password_etx.lock(it)
             login_login_btn.isClickable = !it
         }
+
 
         handleLoading(viewState.loading)
 
@@ -76,7 +78,7 @@ class LogInScreenFragment : ScreenFragment<LogInScreenView, LogInViewState>(), L
 
     private fun handleLoading(lock: Boolean) {
         login_error_txv.clear()
-        login_progress_group.setVisiblity(lock)
+        AppStateManager.setLoadingState(lock)
     }
 
     private fun hideVirtualKeyboard() {

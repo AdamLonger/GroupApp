@@ -16,9 +16,11 @@ import com.wanari.meetingtimer.common.ui.BaseActivity
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.*
+import com.wanari.meetingtimer.navigation.screens.GroupsScreen
 import com.wanari.meetingtimer.navigation.screens.LogInScreen
 import com.wanari.meetingtimer.navigation.screens.NewsScreen
 import com.wanari.meetingtimer.navigation.screens.SettingsScreen
+import com.wanari.meetingtimer.presentation.groups.GroupsScreenFragment
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.settings.SettingsScreenFragment
@@ -72,6 +74,13 @@ class RootActivity : BaseActivity() {
                     rootErrorTextView.setVisiblity(!it)
                 }.disposeOnDestroy()
 
+        AppStateManager.getLoadingState()
+                .subscribeOn(schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    root_progress_group.setVisiblity(it)
+                }.disposeOnDestroy()
+
         rootBackButton.setOnClickListener {
             navigator.navigateBack()
         }
@@ -87,10 +96,12 @@ class RootActivity : BaseActivity() {
                         navigator.navigateTo(NewsScreen(),
                                 NavigationOptions(purgeStack = true))
                 }
-                R.id.root_navigation_item_user -> {
-                    //Navigate
-                }
                 R.id.root_navigation_item_groups -> {
+                    if (currentScreenFragment?.get() !is GroupsScreenFragment)
+                        navigator.navigateTo(GroupsScreen(),
+                                NavigationOptions(purgeStack = true))
+                }
+                R.id.root_navigation_item_user -> {
                     //Navigate
                 }
                 R.id.root_navigation_item_settings -> {
@@ -101,8 +112,7 @@ class RootActivity : BaseActivity() {
             }
             true
         }
-
-        navigator.navigateTo(NewsScreen(), NavigationOptions(purgeStack = true))
+        rootNavigationView.selectedItemId = R.id.root_navigation_item_news
     }
 
     override fun onBackPressed() {

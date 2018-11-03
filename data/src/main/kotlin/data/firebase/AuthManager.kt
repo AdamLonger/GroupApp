@@ -23,7 +23,7 @@ class AuthManager(private val firebaseAuth: FirebaseAuth) {
             }
             firebaseAuth.addAuthStateListener(listener)
             emitter.setCancellable { firebaseAuth.removeAuthStateListener(listener) }
-        }.startWith(firebaseAuth.currentUser.toOptional()).distinctUntilChanged().replayingShare()
+        }.replayingShare()
     }
 
     fun isAuthenticated(): Observable<Boolean> {

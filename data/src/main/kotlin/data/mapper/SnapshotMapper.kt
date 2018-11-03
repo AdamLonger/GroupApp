@@ -1,9 +1,7 @@
 package data.mapper
 
 import com.google.firebase.database.DataSnapshot
-import com.wanari.meetingtimer.common.utils.PROFILE_BIRTH_ID
-import com.wanari.meetingtimer.common.utils.PROFILE_GENDER_ID
-import com.wanari.meetingtimer.common.utils.PROFILE_NAME_ID
+import com.wanari.meetingtimer.common.utils.*
 import model.ProfileDataModel
 
 fun DataSnapshot.getProfile(): ProfileDataModel {

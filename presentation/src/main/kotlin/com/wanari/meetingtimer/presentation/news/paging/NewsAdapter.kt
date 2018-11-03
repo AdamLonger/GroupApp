@@ -41,7 +41,9 @@ class NewsAdapter constructor(
         holder.text?.text = news?.text
 
         news?.objectKey?.let { key ->
-            holder.itemView.setOnClickListener { newsClickSubject.onNext(key) }
+            holder.itemView.setOnClickListener {
+                newsClickSubject.onNext(key)
+            }
         }
     }
 

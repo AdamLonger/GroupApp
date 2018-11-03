@@ -14,6 +14,10 @@ fun DatabaseManager.newsPath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "news/$path" } ?: ""
 }
 
+fun DatabaseManager.groupsPath(path: String = ""): String {
+    return authManager.getCurrentUserBlocking()?.let { "groups/$path" } ?: ""
+}
+
 fun DatabaseManager.profilePath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/profile/$path" } ?: ""
 }

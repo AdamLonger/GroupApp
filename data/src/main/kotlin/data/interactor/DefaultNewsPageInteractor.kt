@@ -2,6 +2,7 @@ package data.interactor
 
 import data.firebase.NewsManager
 import interactor.NewsPageInteractor
+import io.reactivex.Completable
 import io.reactivex.Single
 import model.NewsObject
 
@@ -11,5 +12,9 @@ class DefaultNewsPageInteractor(
 
     override fun getNewsContent(key: String): Single<NewsObject> {
         return newsManager.getItem(key)
+    }
+
+    override fun setNewsSubPath(path: String): Completable {
+        return newsManager.setSubPath(path)
     }
 }

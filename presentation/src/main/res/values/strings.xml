@@ -37,4 +37,7 @@
     <string name="settings_name_text">Name</string>
     <string name="settings_birth_text">Birth Date</string>
     <string name="settings_gender_text">Gender</string>
+
+    <string name="loremipsum">Lorem ipsum dolor sit amet, ex alii commodo virtute sit. Iudico aliquando efficiendi ad ius, vix te illum corpora commune. Usu brute velit delectus ne. Sale idque accusata cu pro, case error necessitatibus his in, te vel diceret invenire tractatos. Veri ponderum accusamus vix at, vix essent similique sententiae cu.</string>
+    <string name="description_text">Description</string>
 </resources>

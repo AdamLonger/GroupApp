@@ -2,8 +2,14 @@ package com.wanari.meetingtimer.presentation.di
 
 import com.wanari.meetingtimer.common.di.declareScreen
 import com.wanari.meetingtimer.navigation.screens.*
+import com.wanari.meetingtimer.presentation.grouppage.GroupPagePresenter
+import com.wanari.meetingtimer.presentation.grouppage.GroupPageScreenFragment
+import com.wanari.meetingtimer.presentation.grouppage.paging.GroupNewsDataProvider
+import com.wanari.meetingtimer.presentation.groups.GroupsPresenter
+import com.wanari.meetingtimer.presentation.groups.GroupsScreenFragment
 import com.wanari.meetingtimer.presentation.login.LogInPresenter
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
+import com.wanari.meetingtimer.presentation.groups.paging.GroupsDataProvider
 import com.wanari.meetingtimer.presentation.news.NewsPresenter
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.news.paging.NewsDataProvider
@@ -28,6 +34,14 @@ val screenModule = module {
 
     declareScreen<NewsPageScreen> { NewsPageScreenFragment() }
     factory { NewsPagePresenter(it[0], get()) }
+
+    declareScreen<GroupsScreen> { GroupsScreenFragment() }
+    factory { GroupsPresenter(it[0], get()) }
+    factory { GroupsDataProvider(get()) }
+
+    declareScreen<GroupPageScreen> { GroupPageScreenFragment() }
+    factory { GroupPagePresenter(it[0], get()) }
+    factory { GroupNewsDataProvider(get()) }
 
     declareScreen<SettingsScreen> { SettingsScreenFragment() }
     factory { SettingsPresenter(it[0], get()) }

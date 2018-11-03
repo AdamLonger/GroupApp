@@ -17,6 +17,20 @@ interface NewsViewStateChanges : ViewStateChange<NewsViewState> {
         }
     }
 
+    class SubPathInited : NewsViewStateChanges {
+        override fun computeNewState(previousState: NewsViewState): NewsViewState {
+            return previousState.copy(
+                    loading = false,
+                    subPathSet = true,
+                    errorRes = null
+            )
+        }
+
+        override fun toString(): String {
+            return "Initial"
+        }
+    }
+
     class Loading : NewsViewStateChanges {
         override fun computeNewState(previousState: NewsViewState): NewsViewState {
             return previousState.copy(

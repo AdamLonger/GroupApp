@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.clear
 import com.wanari.meetingtimer.common.utils.isEmptyOrNull
@@ -61,9 +62,9 @@ class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>()
 
     override fun render(viewState: SignUpViewState) {
         viewState.uiLocked.let {
-            signup_email_etx.lock(it, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-            signup_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
-            signup_confirm_password_etx.lock(it, InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            signup_email_etx.lock(it)
+            signup_password_etx.lock(it)
+            signup_confirm_password_etx.lock(it)
             signup_signup_btn.isClickable = !it
         }
 
@@ -82,7 +83,7 @@ class SignUpScreenFragment : ScreenFragment<SignUpScreenView, SignUpViewState>()
 
     private fun handleLoading(lock: Boolean) {
         signup_error_txv.clear()
-        signup_progress_group.setVisiblity(lock)
+        AppStateManager.setLoadingState(lock)
     }
 
     private fun hideVirtualKeyboard() {

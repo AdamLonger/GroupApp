@@ -23,14 +23,10 @@ fun EditText?.isEmptyOrNull(): Boolean {
     return true
 }
 
-fun EditText?.lock(isLocked: Boolean, type: Int = InputType.TYPE_CLASS_TEXT) {
+fun EditText?.lock(isLocked: Boolean) {
     this?.apply {
         isEnabled = !isLocked
         isFocusable = !isLocked
         isFocusableInTouchMode = !isLocked
-        inputType = when (isLocked) {
-            true -> InputType.TYPE_NULL
-            false -> type
-        }
     }
 }

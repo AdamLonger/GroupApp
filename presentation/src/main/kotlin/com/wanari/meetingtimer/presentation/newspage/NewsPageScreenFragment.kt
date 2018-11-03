@@ -1,7 +1,9 @@
 package com.wanari.meetingtimer.presentation.newspage
 
 import android.content.Context
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
+import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.screens.NewsPageScreen
 import com.wanari.meetingtimer.presentation.R
 import io.reactivex.subjects.PublishSubject
@@ -18,11 +20,18 @@ class NewsPageScreenFragment : ScreenFragment<NewsPageScreenView, NewsPageViewSt
     override fun getTitle(context: Context): String = "Title"
 
     override fun render(viewState: NewsPageViewState) {
-        if (viewState.data == null) {
-            loadContentSubject.onNext(screen<NewsPageScreen>().key)
-        } else {
-            newspage_title?.text = viewState.data.title
-            newspage_text?.text = viewState.data.text
+        AppStateManager.setLoadingState(viewState.loading)
+        if (!viewState.loading) {
+            if (viewState.data == null) {
+                loadContentSubject.onNext(screen<NewsPageScreen>().key)
+            } else {
+                viewState.data.let { data ->
+                    newspage_title?.text = data.title
+                    newspage_text?.text = data.text
+                    newspage_image.setVisiblity(data.image == null)
+                    //TODO("Load image with picasso and handle error")
+                }
+            }
         }
     }
 

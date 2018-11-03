@@ -8,7 +8,7 @@ import model.NewsObject
 
 class NewsDataSource(private val newsInteractor: NewsInteractor) : ItemKeyedDataSource<String, NewsObject>() {
 
-    val disposables = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     init {
         disposables.add(
