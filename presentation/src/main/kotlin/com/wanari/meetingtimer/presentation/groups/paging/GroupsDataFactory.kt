@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.DataSource
 import com.wanari.meetingtimer.presentation.model.GroupObject
 import interactor.GroupsInteractor
-import model.GroupDataModel
 
 class GroupsDataFactory(private val groupsInteractor: GroupsInteractor) : DataSource.Factory<String, GroupObject>() {
 

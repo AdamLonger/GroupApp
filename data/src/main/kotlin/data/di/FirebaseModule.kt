@@ -22,4 +22,5 @@ val firebaseModule = module {
     single { NewsManager(get(), get()) }
     single { GroupManager(get(), get()) }
     single { ProfileManager(get(), get()) }
+    single { SubscriptionManager(get(), get(), get()) }
 }

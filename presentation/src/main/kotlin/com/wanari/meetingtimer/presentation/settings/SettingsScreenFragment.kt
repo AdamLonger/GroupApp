@@ -24,8 +24,7 @@ import org.koin.android.ext.android.inject
 import org.threeten.bp.LocalDate
 import android.widget.NumberPicker
 import com.wanari.meetingtimer.common.model.*
-import kotlinx.android.synthetic.*
-
+import android.support.v7.app.AlertDialog
 
 class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewState>(), SettingsScreenView {
     override val initialViewState = SettingsViewState()
@@ -76,23 +75,12 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
                         settings_birth_etx.isClickable = true
                     },
                     2000,
-                    1,
+                    0,
                     1).show()
         }
 
         settings_gender_etx.setOnClickListener {
-            settings_gender_etx.isClickable = false
-        sada
-            val picker = NumberPicker(context)
-            picker.minValue = 0
-            picker.maxValue = 1
-            picker.displayedValues = arrayOf(MALE_TEXT, FEMALE_TEXT)
-            picker.setOnValueChangedListener { _, _, newVal ->
-                settings_gender_etx.setText(
-                        GenderEnum.valueOf(picker.displayedValues[newVal]).getStringRes()
-                )
-                settings_gender_etx.isClickable = true
-            }
+            context?.let {context -> handleGenderPickIntent(context) }
         }
     }
 
@@ -123,6 +111,37 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
             settings_gender_etx.setText(profileObject.gender?.getName() ?: "")
 
         }
+    }
+
+    private fun handleGenderPickIntent(context:Context){
+        settings_gender_etx.isClickable = false
+
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Select Gender")
+        val picker = NumberPicker(context)
+        picker.minValue = 0
+        picker.maxValue = 1
+        picker.displayedValues = arrayOf(MALE_TEXT, FEMALE_TEXT)
+
+        alertDialogBuilder.setView(picker)
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok"
+                ) { dialog, _ ->
+
+                    settings_gender_etx?.setText(
+                            GenderEnum.valueOf(
+                                    picker.displayedValues[picker.value]
+                            ).getStringRes()
+                    )
+
+                    settings_gender_etx.isClickable = true
+                    dialog.cancel()
+                }
+                .setNegativeButton("Cancel"
+                ) { dialog, _ -> dialog.cancel() }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     override fun logOut(): Observable<Any> = logOutSubject

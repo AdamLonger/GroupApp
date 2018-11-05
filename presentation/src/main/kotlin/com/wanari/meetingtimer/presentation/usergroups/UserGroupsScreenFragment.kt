@@ -1,4 +1,4 @@
-package com.wanari.meetingtimer.presentation.groups
+package com.wanari.meetingtimer.presentation.usergroups
 
 import android.arch.lifecycle.Observer
 import android.content.Context
@@ -11,33 +11,33 @@ import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.navigation.Navigator
 import com.wanari.meetingtimer.navigation.screens.GroupPageScreen
 import com.wanari.meetingtimer.presentation.R
-import com.wanari.meetingtimer.presentation.groups.paging.GroupsAdapter
-import com.wanari.meetingtimer.presentation.groups.paging.GroupsDataProvider
+import com.wanari.meetingtimer.presentation.usergroups.paging.UserGroupsAdapter
+import com.wanari.meetingtimer.presentation.usergroups.paging.UserGroupsDataProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_groups.*
+import kotlinx.android.synthetic.main.fragment_user_groups.*
 import org.koin.android.ext.android.inject
 
-class GroupsScreenFragment : ScreenFragment<GroupsScreenView, GroupsViewState>(), GroupsScreenView {
-    override val initialViewState = GroupsViewState()
-    override val presenter by injectPresenter<GroupsPresenter>()
+class UserGroupsScreenFragment : ScreenFragment<UserGroupsScreenView, UserGroupsViewState>(), UserGroupsScreenView {
+    override val initialViewState = UserGroupsViewState()
+    override val presenter by injectPresenter<UserGroupsPresenter>()
     override val hasToolbar = true
-    override val layoutRes = R.layout.fragment_groups
+    override val layoutRes = R.layout.fragment_user_groups
 
-    private lateinit var groupsAdapter: GroupsAdapter
-    private val groupsProvider by inject<GroupsDataProvider>()
+    private lateinit var groupsAdapter: UserGroupsAdapter
+    private val groupsProvider by inject<UserGroupsDataProvider>()
     private val navigator by inject<Navigator>()
 
     private val disposables = CompositeDisposable()
 
-    override fun getTitle(context: Context): String = "Groups Screen"
+    override fun getTitle(context: Context): String = "User Groups Screen"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
     }
 
-    override fun render(viewState: GroupsViewState) {
+    override fun render(viewState: UserGroupsViewState) {
         AppStateManager.setLoadingState(viewState.loading)
     }
 
@@ -58,11 +58,11 @@ class GroupsScreenFragment : ScreenFragment<GroupsScreenView, GroupsViewState>()
     }
 
     private fun initRecyclerView() {
-        groups_recycler_view.layoutManager = LinearLayoutManager(context)
-        groups_recycler_view.addItemDecoration(DividerItemDecoration(
+        usergroups_recycler_view.layoutManager = LinearLayoutManager(context)
+        usergroups_recycler_view.addItemDecoration(DividerItemDecoration(
                 context, LinearLayoutManager.VERTICAL))
-        groupsAdapter = GroupsAdapter(context!!)
-        groups_recycler_view.adapter = groupsAdapter
+        groupsAdapter = UserGroupsAdapter(context!!)
+        usergroups_recycler_view.adapter = groupsAdapter
         groupsProvider.getItems()?.observe(this, Observer(groupsAdapter::submitList))
     }
 }

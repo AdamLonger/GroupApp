@@ -12,4 +12,5 @@ val dataModule = module {
     single { DefaultGroupsInteractor(get()) as GroupsInteractor }
     single { DefaultGroupPageInteractor(get(),get()) as GroupPageInteractor }
     single { DefaultSettingsInteractor(get(), get(), get()) as SettingsInteractor }
+    single { DefaultUserGroupsInteractor(get()) as UserGroupsInteractor }
 }

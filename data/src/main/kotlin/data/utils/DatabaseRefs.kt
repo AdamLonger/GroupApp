@@ -18,6 +18,10 @@ fun DatabaseManager.groupsPath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "groups/$path" } ?: ""
 }
 
+fun DatabaseManager.subscriptionsPath(path: String = ""): String {
+    return authManager.getCurrentUserBlocking()?.let { "subscriptions/$path" } ?: ""
+}
+
 fun DatabaseManager.profilePath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/profile/$path" } ?: ""
 }

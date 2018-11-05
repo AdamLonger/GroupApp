@@ -16,14 +16,12 @@ import com.wanari.meetingtimer.common.ui.BaseActivity
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.*
-import com.wanari.meetingtimer.navigation.screens.GroupsScreen
-import com.wanari.meetingtimer.navigation.screens.LogInScreen
-import com.wanari.meetingtimer.navigation.screens.NewsScreen
-import com.wanari.meetingtimer.navigation.screens.SettingsScreen
+import com.wanari.meetingtimer.navigation.screens.*
 import com.wanari.meetingtimer.presentation.groups.GroupsScreenFragment
 import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.settings.SettingsScreenFragment
+import com.wanari.meetingtimer.presentation.usergroups.UserGroupsScreenFragment
 import com.wanari.meetingtimer.utils.reciever.NetworkChangeReceiver
 import data.firebase.AuthManager
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
@@ -102,7 +100,9 @@ class RootActivity : BaseActivity() {
                                 NavigationOptions(purgeStack = true))
                 }
                 R.id.root_navigation_item_user -> {
-                    //Navigate
+                    if (currentScreenFragment?.get() !is UserGroupsScreenFragment)
+                        navigator.navigateTo(UserGroupsScreen(),
+                                NavigationOptions(purgeStack = true))
                 }
                 R.id.root_navigation_item_settings -> {
                     if (currentScreenFragment?.get() !is SettingsScreenFragment)
