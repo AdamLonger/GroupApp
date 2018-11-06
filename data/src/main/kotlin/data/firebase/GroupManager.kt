@@ -66,7 +66,9 @@ class GroupManager(authManager: AuthManager, private val database: FirebaseDatab
     fun getItem(key: String): Single<GroupDataModel> {
         return RxFirebaseDatabase.data(databaseRef.child(groupsPath(key)))
                 .map {
-                    it.getValue(GroupDataModel::class.java)
+                    it.getValue(GroupDataModel::class.java).apply {
+                        this?.objectKey = key
+                    }
                 }
     }
 }

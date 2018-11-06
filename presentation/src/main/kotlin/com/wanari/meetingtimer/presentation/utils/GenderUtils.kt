@@ -1,12 +1,11 @@
-package com.wanari.meetingtimer.common.model
+package com.wanari.meetingtimer.presentation.utils
 
 import android.content.Context
-import com.wanari.meetingtimer.common.R
+import com.wanari.meetingtimer.presentation.R
+import enums.GenderEnum
 
 const val MALE_TEXT = "Male"
 const val FEMALE_TEXT = "Female"
-
-enum class GenderEnum { Male, Female }
 
 fun GenderEnum.getValue(context: Context): String? {
     return when (this) {

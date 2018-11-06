@@ -22,6 +22,11 @@ fun DatabaseManager.subscriptionsPath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "subscriptions/$path" } ?: ""
 }
 
+
+fun DatabaseManager.seenPath(path: String = ""): String {
+    return authManager.getCurrentUserBlocking()?.let { "seen/${it.uid}/$path" } ?: ""
+}
+
 fun DatabaseManager.profilePath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/profile/$path" } ?: ""
 }

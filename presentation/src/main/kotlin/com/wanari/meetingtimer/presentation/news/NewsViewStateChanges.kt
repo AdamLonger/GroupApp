@@ -1,7 +1,6 @@
 package com.wanari.meetingtimer.presentation.news
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
-import com.wanari.meetingtimer.presentation.news.paging.NewsDataSource
 
 interface NewsViewStateChanges : ViewStateChange<NewsViewState> {
     class Initial : NewsViewStateChanges {

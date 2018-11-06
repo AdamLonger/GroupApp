@@ -8,8 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wanari.meetingtimer.presentation.R
-import com.wanari.meetingtimer.presentation.groups.paging.GroupsAdapter
-import com.wanari.meetingtimer.presentation.model.GroupObject
+import model.GroupObject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_adapter_group.view.*
 
@@ -27,7 +26,7 @@ class UserGroupsAdapter constructor(
                     newItem: GroupObject?): Boolean = (oldItem?.name == newItem?.name) &&
                     (oldItem?.description == newItem?.description) &&
                     (oldItem?.image == newItem?.image)&&
-                    (oldItem?.key == newItem?.key)
+                    (oldItem?.objectKey == newItem?.objectKey)
         }) {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
@@ -42,8 +41,9 @@ class UserGroupsAdapter constructor(
         val group = getItem(position)
         holder.title?.text = group?.name
         holder.text?.text = group?.description
-        group?.key?.let { key ->
-            holder.itemView.setOnClickListener { groupClickSubject.onNext(key) }
+        group?.objectKey?.let { key ->
+            holder.itemView.setOnClickListener {
+                groupClickSubject.onNext(key) }
         }
     }
 

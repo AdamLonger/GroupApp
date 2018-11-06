@@ -4,12 +4,12 @@ import com.wanari.meetingtimer.common.mvi.BasePresenter
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
 import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.presentation.R
-import com.wanari.meetingtimer.presentation.model.ProfileObject
-import com.wanari.meetingtimer.presentation.model.parse
-import com.wanari.meetingtimer.presentation.model.toDataModel
 import interactor.SettingsInteractor
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.ofType
 import io.reactivex.schedulers.Schedulers
+import model.ProfileObject
+import util.Some
 
 class SettingsPresenter(initialState: SettingsViewState, private val settingsInteractor: SettingsInteractor) : BasePresenter<SettingsScreenView, SettingsViewState>(initialState) {
 
@@ -24,16 +24,15 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
                             .subscribeOn(Schedulers.io())
                 })
 
-        result.add(settingsInteractor.loadProfile()
-                .map { ProfileObject().parse(it) }
-                .mapViewStateChange { SettingsViewStateChanges.ProfileLoaded(it) }
+        result.add(settingsInteractor.loadProfile().ofType<Some<ProfileObject>>()
+                .mapViewStateChange { SettingsViewStateChanges.ProfileLoaded(it.value) }
                 .onErrorReturn { error -> SettingsViewStateChanges.Error(R.string.message_error) }
                 .startWith(SettingsViewStateChanges.Loading())
                 .subscribeOn(Schedulers.io()))
 
         result.add(intent { view -> view.saveProfile() }
                 .flatMap { data ->
-                    settingsInteractor.saveProfile(data.toDataModel())
+                    settingsInteractor.saveProfile(data)
                             .mapViewStateChange { SettingsViewStateChanges.Initial() }
                             .onErrorReturn { SettingsViewStateChanges.Error(R.string.message_error) }
                             .startWith(SettingsViewStateChanges.Loading())
@@ -52,7 +51,8 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
         result.add(AppStateManager.getNetworkState()
                 .toObservable()
                 .mapViewStateChange {
-                    SettingsViewStateChanges.LockUI(!it) }
+                    SettingsViewStateChanges.LockUI(!it)
+                }
                 .onErrorReturn { SettingsViewStateChanges.Error(R.string.message_error) }
                 .subscribeOn(Schedulers.io()))
 

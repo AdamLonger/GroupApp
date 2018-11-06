@@ -1,7 +1,7 @@
 package com.wanari.meetingtimer.presentation.settings
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
-import com.wanari.meetingtimer.presentation.model.ProfileObject
+import model.ProfileObject
 
 interface SettingsViewStateChanges : ViewStateChange<SettingsViewState> {
     class Initial : SettingsViewStateChanges {

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.DatePicker
 import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.TRIGGER
@@ -15,7 +14,7 @@ import com.wanari.meetingtimer.navigation.NavigationOptions
 import com.wanari.meetingtimer.navigation.Navigator
 import com.wanari.meetingtimer.navigation.screens.LogInScreen
 import com.wanari.meetingtimer.presentation.R
-import com.wanari.meetingtimer.presentation.model.ProfileObject
+import model.ProfileObject
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -23,8 +22,13 @@ import model.SettingsObject
 import org.koin.android.ext.android.inject
 import org.threeten.bp.LocalDate
 import android.widget.NumberPicker
-import com.wanari.meetingtimer.common.model.*
 import android.support.v7.app.AlertDialog
+import com.wanari.meetingtimer.presentation.utils.FEMALE_TEXT
+import com.wanari.meetingtimer.presentation.utils.MALE_TEXT
+import com.wanari.meetingtimer.presentation.utils.getName
+import com.wanari.meetingtimer.presentation.utils.getStringRes
+import enums.GenderEnum
+
 
 class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewState>(), SettingsScreenView {
     override val initialViewState = SettingsViewState()
@@ -70,7 +74,7 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
             DatePickerDialog(
                     context,
                     DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                        settings_birth_etx.setText(LocalDate.of(year, month, dayOfMonth)
+                        settings_birth_etx.setText(LocalDate.of(year, month+1, dayOfMonth)
                                 .toDisplayString())
                         settings_birth_etx.isClickable = true
                     },

@@ -13,6 +13,8 @@ import com.wanari.meetingtimer.navigation.screens.GroupPageScreen
 import com.wanari.meetingtimer.presentation.R
 import com.wanari.meetingtimer.presentation.groups.paging.GroupsAdapter
 import com.wanari.meetingtimer.presentation.groups.paging.GroupsDataProvider
+import model.GroupObject
+import com.wanari.meetingtimer.presentation.utils.PagingProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_groups.*

@@ -1,7 +1,7 @@
 package com.wanari.meetingtimer.presentation.settings
 
 import com.wanari.meetingtimer.common.mvi.MviView
-import com.wanari.meetingtimer.presentation.model.ProfileObject
+import model.ProfileObject
 import io.reactivex.Observable
 import model.SettingsObject
 

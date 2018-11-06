@@ -11,7 +11,7 @@ import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.GENERAL_PATH
 import com.wanari.meetingtimer.navigation.Navigator
 import com.wanari.meetingtimer.navigation.screens.NewsPageScreen
-import com.wanari.meetingtimer.navigation.screens.NewsScreen
+import com.wanari.meetingtimer.presentation.utils.PagingProvider
 import com.wanari.meetingtimer.presentation.R
 import com.wanari.meetingtimer.presentation.news.paging.NewsAdapter
 import com.wanari.meetingtimer.presentation.news.paging.NewsDataProvider
@@ -19,6 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_news.*
+import model.NewsObject
 import org.koin.android.ext.android.inject
 
 class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), NewsScreenView {
@@ -56,7 +57,7 @@ class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), News
 
     override fun onResume() {
         super.onResume()
-        if(recyclerInited){
+        if (recyclerInited) {
             disposables.add(newsAdapter.getNewsClickSubject()
                     .observeOn(Schedulers.io())
                     .subscribeOn(Schedulers.io())
