@@ -26,7 +26,7 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
 
         result.add(settingsInteractor.loadProfile().ofType<Some<ProfileObject>>()
                 .mapViewStateChange { SettingsViewStateChanges.ProfileLoaded(it.value) }
-                .onErrorReturn { error -> SettingsViewStateChanges.Error(R.string.message_error) }
+                .onErrorReturn { _ -> SettingsViewStateChanges.Error(R.string.message_error) }
                 .startWith(SettingsViewStateChanges.Loading())
                 .subscribeOn(Schedulers.io()))
 

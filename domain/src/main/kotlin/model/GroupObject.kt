@@ -8,5 +8,6 @@ data class GroupObject(
         val latestDate: LocalDateTime? = null,
         val image: String? = null,
         override var objectKey: String? = null,
-        val isNotSeen: Boolean = false
+        var isNotSeen: Boolean = false,
+        var isSubscribed:Boolean = false
 ) : FirebaseObject()

@@ -1,7 +1,7 @@
 package com.wanari.meetingtimer.presentation.grouppage
 
 import com.wanari.meetingtimer.common.mvi.ViewStateChange
-import model.GroupDataModel
+import model.GroupObject
 
 interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
     class Initial : GroupPageViewStateChanges {
@@ -10,6 +10,7 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
                     loading = false,
                     data = null,
                     subPathSet = false,
+                    isSubscribed = false,
                     errorRes = null
             )
         }
@@ -33,7 +34,7 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         }
     }
 
-    class DataLoaded(private val group: GroupDataModel) : GroupPageViewStateChanges {
+    class DataLoaded(private val group: GroupObject) : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
                     loading = false,

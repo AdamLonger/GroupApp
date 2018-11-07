@@ -12,7 +12,6 @@ import model.GroupDataModel
 import model.GroupObject
 import model.ProfileDataModel
 import model.ProfileObject
-import util.Optional
 
 fun ProfileDataModel.toMap(): Map<String, String> {
     return mapOf(

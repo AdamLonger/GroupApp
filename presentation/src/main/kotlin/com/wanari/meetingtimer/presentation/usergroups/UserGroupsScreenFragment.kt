@@ -35,6 +35,7 @@ class UserGroupsScreenFragment : ScreenFragment<UserGroupsScreenView, UserGroups
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+
     }
 
     override fun render(viewState: UserGroupsViewState) {

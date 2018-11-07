@@ -16,7 +16,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { path ->
                     interactor.setNewsSubPath(path)
                             .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
-                            .onErrorReturn { error -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
@@ -25,7 +25,25 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { key ->
                     interactor.getGroupContent(key)
                             .mapViewStateChange { GroupPageViewStateChanges.DataLoaded(it) }
-                            .onErrorReturn { error -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .startWith(GroupPageViewStateChanges.Loading())
+                            .subscribeOn(Schedulers.io())
+                })
+
+        result.add(intent { view -> view.subscribe() }
+                .flatMap { key ->
+                    interactor.subscribe(key)
+                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
+                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .startWith(GroupPageViewStateChanges.Loading())
+                            .subscribeOn(Schedulers.io())
+                })
+
+        result.add(intent { view -> view.unsubscribe() }
+                .flatMap { key ->
+                    interactor.unsubscribe(key)
+                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
+                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })

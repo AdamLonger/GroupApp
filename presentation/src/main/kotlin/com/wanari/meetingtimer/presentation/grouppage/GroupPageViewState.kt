@@ -1,10 +1,11 @@
 package com.wanari.meetingtimer.presentation.grouppage
 
-import model.GroupDataModel
+import model.GroupObject
 
 data class GroupPageViewState(
         val loading: Boolean = false,
-        val data: GroupDataModel? = null,
+        val data: GroupObject? = null,
         val subPathSet: Boolean = false,
+        val isSubscribed: Boolean = false,
         val errorRes: Int? = null
 )

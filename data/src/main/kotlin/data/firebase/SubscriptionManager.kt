@@ -1,32 +1,30 @@
 package data.firebase
 
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.wanari.meetingtimer.common.utils.TRIGGER
-import data.utils.groupsPath
+import data.mapper.toObject
 import data.utils.subscriptionsPath
+import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
-import model.GroupDataModel
+import model.GroupObject
 
 class SubscriptionManager(authManager: AuthManager,
                           private val database: FirebaseDatabase,
-                          private val groupManager: GroupManager) :
+                          private val groupManager: GroupManager,
+                          private val seenManager: SeenManager) :
         DatabaseManager(authManager, database) {
 
     private val databaseRef = database.reference
-    private val invalidationSubject = PublishSubject.create<Any>()
+    private val invalidationSubject: Observable<Any> = PublishSubject.merge(
+            groupManager.getItemChangeSubject(),
+            seenManager.getItemChangeSubject())
 
-    init {
-        databaseRef.child(groupsPath()).addChildEventListener(SubscriptionsChildEventListener())
-    }
+    fun getItemChangeSubject(): Observable<Any> = invalidationSubject
 
-    fun getItemChangeSubject(): PublishSubject<Any> = invalidationSubject
-
-    fun getItems(count: Int): Single<List<GroupDataModel>> {
+    fun getItems(count: Int): Single<List<GroupObject>> {
         return Single.defer {
             val userid = authManager.getCurrentUserBlocking()?.uid
             userid?.let { uid ->
@@ -37,7 +35,13 @@ class SubscriptionManager(authManager: AuthManager,
                         .flatMap {
                             Single.merge(it
                                     .map { item ->
-                                        groupManager.getItem(item)
+                                        groupManager.getItem(item).zipWith(
+                                                seenManager.getItem(item)
+                                        ).map { pair ->
+                                            pair.first.toObject().apply {
+                                                isNotSeen = this.latestDate?.isAfter(pair.second) ?: false
+                                            }
+                                        }
                                     }
                             ).toList()
                         }
@@ -45,7 +49,7 @@ class SubscriptionManager(authManager: AuthManager,
         }
     }
 
-    fun getItemsAfter(key: String, count: Int): Single<List<GroupDataModel>> {
+    fun getItemsAfter(key: String, count: Int): Single<List<GroupObject>> {
         return Single.defer {
             val userid = authManager.getCurrentUserBlocking()?.uid
             userid?.let { uid ->
@@ -57,7 +61,13 @@ class SubscriptionManager(authManager: AuthManager,
                         .flatMap {
                             Single.merge(it
                                     .map { item ->
-                                        groupManager.getItem(item)
+                                        groupManager.getItem(item).zipWith(
+                                                seenManager.getItem(item)
+                                        ).map { pair ->
+                                            pair.first.toObject().apply {
+                                                isNotSeen = this.latestDate?.isBefore(pair.second) ?: false
+                                            }
+                                        }
                                     }
                             ).toList()
                         }
@@ -65,7 +75,7 @@ class SubscriptionManager(authManager: AuthManager,
         }
     }
 
-    fun getItemsBefore(key: String, count: Int): Single<List<GroupDataModel>> {
+    fun getItemsBefore(key: String, count: Int): Single<List<GroupObject>> {
         return Single.defer {
             val userid = authManager.getCurrentUserBlocking()?.uid
             userid?.let { uid ->
@@ -77,7 +87,13 @@ class SubscriptionManager(authManager: AuthManager,
                         .flatMap {
                             Single.merge(it
                                     .map { item ->
-                                        groupManager.getItem(item)
+                                        groupManager.getItem(item).zipWith(
+                                                seenManager.getItem(item)
+                                        ).map { pair ->
+                                            pair.first.toObject().apply {
+                                                isNotSeen = this.latestDate?.isBefore(pair.second) ?: false
+                                            }
+                                        }
                                     }
                             ).toList()
                         }
@@ -85,36 +101,36 @@ class SubscriptionManager(authManager: AuthManager,
         }
     }
 
-    fun getItem(key: String): Single<GroupDataModel> {
-        return Single.defer {
-            val userid = authManager.getCurrentUserBlocking()?.uid
-            userid?.let { uid ->
-                return@defer RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath("$uid/$key")))
-                        .flatMap {
-                            groupManager.getItem(it.getValue(String::class.java)!!)
-                        }
-            }
+    fun unsubscribe(key: String): Completable {
+        val userid = authManager.getCurrentUserBlocking()?.uid
+        userid?.let { uid ->
+            RxFirebaseDatabase.data(
+                    databaseRef.child(subscriptionsPath("$uid/"))
+                            .equalTo(key))
+                    .flatMapCompletable { snapshot ->
+                        RxFirebaseDatabase.removeValue(snapshot.ref)
+                    }
         }
+        return Completable.complete()
     }
 
-    inner class SubscriptionsChildEventListener : ChildEventListener {
-        override fun onCancelled(p0: DatabaseError) {}
-
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            invalidationSubject.onNext(TRIGGER)
+    fun subscribe(key: String): Completable {
+        val userid = authManager.getCurrentUserBlocking()?.uid
+        userid?.let { uid ->
+            return RxFirebaseDatabase.setValue(
+                    databaseRef.child(subscriptionsPath("$uid/")).push(), key)
         }
+        return Completable.complete()
+    }
 
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            invalidationSubject.onNext(TRIGGER)
+    fun isSubscribed(key: String): Single<Boolean> {
+        val userid = authManager.getCurrentUserBlocking()?.uid
+        userid?.let { uid ->
+            ITTAPARA
+            return RxFirebaseDatabase.data(
+                    databaseRef.child(subscriptionsPath("$uid/"))
+                            .equalTo(key)).map { it.exists() }
         }
-
-        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-            invalidationSubject.onNext(TRIGGER)
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot) {
-            invalidationSubject.onNext(TRIGGER)
-        }
-
+        return Single.just(false)
     }
 }

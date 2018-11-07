@@ -10,7 +10,7 @@ val dataModule = module {
     single { DefaultNewsInteractor(get()) as NewsInteractor }
     single { DefaultNewsPageInteractor(get()) as NewsPageInteractor }
     single { DefaultGroupsInteractor(get()) as GroupsInteractor }
-    single { DefaultGroupPageInteractor(get(), get()) as GroupPageInteractor }
+    single { DefaultGroupPageInteractor(get(), get(), get()) as GroupPageInteractor }
     single { DefaultSettingsInteractor(get(), get(), get()) as SettingsInteractor }
     single { DefaultUserGroupsInteractor(get()) as UserGroupsInteractor }
 }

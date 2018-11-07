@@ -32,6 +32,8 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
 
     private val loadContentSubject = PublishSubject.create<String>()
     private val setSubPathSubject = PublishSubject.create<String>()
+    private val subscribeSubject = PublishSubject.create<String>()
+    private val unsubscribeSubject = PublishSubject.create<String>()
     private val disposables = CompositeDisposable()
 
     private lateinit var newsAdapter: NewsAdapter
@@ -65,6 +67,20 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
                 viewState.data.let { data ->
                     grouppage_name?.text = data.name
                     grouppage_description?.text = data.description
+
+                    if (data.isSubscribed) {
+                        grouppage_subscribe_button.text = "Unsubscribe"
+                    } else {
+                        grouppage_subscribe_button.text = "Subscribe"
+                    }
+
+                    grouppage_subscribe_button.setOnClickListener {
+                        if (data.isSubscribed) {
+                            unsubscribeSubject.onNext(screen<GroupPageScreen>().key)
+                        } else {
+                            subscribeSubject.onNext(screen<GroupPageScreen>().key)
+                        }
+                    }
                 }
             }
 
@@ -115,4 +131,6 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
 
     override fun loadContent(): PublishSubject<String> = loadContentSubject
     override fun setSubPath(): PublishSubject<String> = setSubPathSubject
+    override fun subscribe(): PublishSubject<String> = subscribeSubject
+    override fun unsubscribe(): PublishSubject<String> = unsubscribeSubject
 }

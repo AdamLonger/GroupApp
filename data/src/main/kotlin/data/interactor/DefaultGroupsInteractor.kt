@@ -3,6 +3,7 @@ package data.interactor
 import data.firebase.GroupManager
 import data.mapper.toObject
 import interactor.GroupsInteractor
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import model.GroupObject
@@ -11,7 +12,7 @@ class DefaultGroupsInteractor(
         private val groupManager: GroupManager
 ) : GroupsInteractor {
 
-    override fun getItemChangeSubject(): PublishSubject<Any> = groupManager.getItemChangeSubject()
+    override fun getItemChangeSubject(): Observable<Any> = groupManager.getItemChangeSubject()
 
     override fun getItems(count: Int): Single<List<GroupObject>> =
             groupManager.getItems(count).map { items ->

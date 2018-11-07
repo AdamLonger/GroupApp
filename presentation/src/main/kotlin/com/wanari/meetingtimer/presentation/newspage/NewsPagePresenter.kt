@@ -17,7 +17,7 @@ class NewsPagePresenter(initialState: NewsPageViewState, private val interactor:
                 .flatMap { key ->
                     interactor.getNewsContent(key)
                             .mapViewStateChange { NewsPageViewStateChanges.DataLoaded(it) }
-                            .onErrorReturn { error -> NewsPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { _ -> NewsPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(NewsPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
