@@ -104,12 +104,15 @@ class SubscriptionManager(authManager: AuthManager,
     fun unsubscribe(key: String): Completable {
         val userid = authManager.getCurrentUserBlocking()?.uid
         userid?.let { uid ->
-            RxFirebaseDatabase.data(
+            return RxFirebaseDatabase.data(
                     databaseRef.child(subscriptionsPath("$uid/"))
+                            .orderByValue()
                             .equalTo(key))
-                    .flatMapCompletable { snapshot ->
-                        RxFirebaseDatabase.removeValue(snapshot.ref)
-                    }
+                    .flatMapCompletable {snapshot ->
+                        RxFirebaseDatabase.removeValue(
+                                ASD
+                                snapshot.ref
+                        )}
         }
         return Completable.complete()
     }
@@ -126,10 +129,12 @@ class SubscriptionManager(authManager: AuthManager,
     fun isSubscribed(key: String): Single<Boolean> {
         val userid = authManager.getCurrentUserBlocking()?.uid
         userid?.let { uid ->
-            ITTAPARA
-            return RxFirebaseDatabase.data(
+            return  RxFirebaseDatabase.data(
                     databaseRef.child(subscriptionsPath("$uid/"))
-                            .equalTo(key)).map { it.exists() }
+                            .orderByValue()
+                            .equalTo(key))
+                    .map {
+                        it.value != null}
         }
         return Single.just(false)
     }
