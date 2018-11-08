@@ -26,7 +26,7 @@ dependencies {
 
     implementation Deps.mvi
     implementation Deps.kotlin
-
+    implementation Deps.picasso
     implementation Deps.timber
 
     implementation Android.Support.constraint
@@ -40,7 +40,7 @@ dependencies {
 
     implementation Deps.threeTen
 
-    Calligraphy.all.each{ cal ->
+    Calligraphy.all.each { cal ->
         implementation cal
     }
 

@@ -8,4 +8,6 @@ object Deps {
     const val mvi = "com.hannesdorfmann.mosby3:mvi:${Versions.mvi}"
 
     const val playServicesBase = "com.google.android.gms:play-services-base:${Versions.playServicesBase}"
+
+    const val picasso = "com.squareup.picasso:picasso:2.71828"
 }

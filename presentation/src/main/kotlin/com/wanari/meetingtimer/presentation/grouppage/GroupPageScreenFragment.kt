@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.squareup.picasso.Picasso
 import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
+import com.wanari.meetingtimer.common.utils.nullIfEmpty
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.Navigator
 import com.wanari.meetingtimer.navigation.screens.GroupPageScreen
@@ -67,6 +69,12 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
                     grouppage_name?.text = data.name
                     grouppage_description?.text = data.description
                     grouppage_list_empty_txv.setVisiblity(newsAdapter.itemCount == 0)
+                    data.image?.nullIfEmpty()?.let {
+                        Picasso.get().load(it)
+                                .resize(grouppage_image.width, 0)
+                                .into(grouppage_image)
+                    }
+                    grouppage_image.setVisiblity(data.image != null)
 
                     if (data.isSubscribed) {
                         grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)

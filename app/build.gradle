@@ -35,6 +35,7 @@ dependencies {
 
     implementation Deps.mvi
     implementation Deps.kotlin
+    implementation Deps.picasso
 
     implementation Android.Support.appcompat
     implementation Android.Support.recyclerview
