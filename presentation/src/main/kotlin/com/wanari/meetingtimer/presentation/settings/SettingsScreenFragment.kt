@@ -97,15 +97,8 @@ class SettingsScreenFragment : ScreenFragment<SettingsScreenView, SettingsViewSt
         }
 
         viewState.uiLocked.let {
-            settings_name_etx.lock(it)
-            settings_birth_etx.lock(it)
-            settings_gender_etx.lock(it)
-
-            settings_birth_etx.isFocusableInTouchMode = false
-            settings_gender_etx.isFocusableInTouchMode = false
-
-            settings_save_btn.isClickable = !it
-            settings_logout_btn.isClickable = !it
+            settings_save_btn.isEnabled = !it
+            settings_logout_btn.isEnabled = !it
         }
 
 

@@ -29,10 +29,4 @@ class ProfileManager(authManager: AuthManager, private val database: FirebaseDat
                 databaseRef.child(profilePath()),
                 data.toMap())
     }
-
-    fun saveSettings(data: SettingsObject): Completable {
-        return RxFirebaseDatabase.updateChildren(
-                databaseRef.child(settingsPath()),
-                mapOf("exampleValue" to data.exampleData))
-    }
 }

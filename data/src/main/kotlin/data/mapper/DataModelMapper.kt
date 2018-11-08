@@ -1,5 +1,6 @@
 package data.mapper
 
+import com.wanari.meetingtimer.common.utils.nullIfEmpty
 import com.wanari.meetingtimer.common.utils.toFirebaseString
 import com.wanari.meetingtimer.common.utils.toLocalDate
 import com.wanari.meetingtimer.common.utils.toLocalDateTime
@@ -24,8 +25,8 @@ fun ProfileDataModel.toMap(): Map<String, String> {
 fun ProfileDataModel.toObject(): ProfileObject {
     return ProfileObject(
             name,
-            birth?.toLocalDate(),
-            gender?.run { GenderEnum.valueOf(this) }
+            birth?.nullIfEmpty()?.toLocalDate(),
+            gender?.nullIfEmpty()?.run { GenderEnum.valueOf(this) }
     )
 }
 

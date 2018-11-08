@@ -23,7 +23,8 @@ class DefaultSettingsInteractor(private val authManager: AuthManager,
     }
 
     override fun loadProfile(): Observable<Optional<ProfileObject>> {
-        return profileManager.loadProfile().map { it.component1()?.toObject().toOptional() }
+        return profileManager.loadProfile().map {
+            it.component1()?.toObject().toOptional() }
     }
 
     override fun saveProfile(data: ProfileObject): Completable {
