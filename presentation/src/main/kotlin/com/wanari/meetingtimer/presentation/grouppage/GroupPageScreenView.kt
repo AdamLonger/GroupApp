@@ -8,4 +8,5 @@ interface GroupPageScreenView : MviView<GroupPageViewState> {
     fun setSubPath(): PublishSubject<String>
     fun subscribe(): PublishSubject<String>
     fun unsubscribe(): PublishSubject<String>
+    fun updateSeen(): PublishSubject<String>
 }

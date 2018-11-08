@@ -32,4 +32,8 @@ class DefaultGroupPageInteractor(
     override fun unsubscribe(key: String): Completable {
         return subscriptionManager.unsubscribe(key)
     }
+
+    override fun updateSeen(key: String): Completable {
+        return subscriptionManager.updateSeen(key)
+    }
 }

@@ -1,6 +1,5 @@
 package com.wanari.meetingtimer.common.utils
 
-import android.text.InputType
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView

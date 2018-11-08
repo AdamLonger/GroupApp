@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.view.animation.AnimationUtils
+import com.wanari.meetingtimer.common.ui.AppStateManager
 import com.wanari.meetingtimer.common.ui.ScreenFragment
 import com.wanari.meetingtimer.common.utils.setVisiblity
 import com.wanari.meetingtimer.navigation.Navigator
@@ -34,6 +34,7 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
     private val setSubPathSubject = PublishSubject.create<String>()
     private val subscribeSubject = PublishSubject.create<String>()
     private val unsubscribeSubject = PublishSubject.create<String>()
+    private val seenSubject = PublishSubject.create<String>()
     private val disposables = CompositeDisposable()
 
     private lateinit var newsAdapter: NewsAdapter
@@ -48,30 +49,29 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
             isDescriptionVisible = !isDescriptionVisible
             grouppage_description.setVisiblity(isDescriptionVisible)
             grouppage_description_arrow.rotation = (grouppage_description_arrow.rotation + 180) % 360
-
-            var animRes = R.anim.abc_fade_out
-            if (isDescriptionVisible) animRes = R.anim.abc_fade_in
-            grouppage_description.startAnimation(
-                    AnimationUtils.loadAnimation(context, animRes)
-            )
         }
     }
 
     override fun render(viewState: GroupPageViewState) {
+        AppStateManager.setLoadingState(viewState.loading)
+
         if (viewState.loading) {
 
         } else {
-            if (viewState.data == null) {
+            if (!viewState.seenUpdated) {
+                seenSubject.onNext(screen<GroupPageScreen>().key)
+            } else if (viewState.data == null) {
                 loadContentSubject.onNext(screen<GroupPageScreen>().key)
             } else {
                 viewState.data.let { data ->
                     grouppage_name?.text = data.name
                     grouppage_description?.text = data.description
+                    grouppage_list_empty_txv.setVisiblity(newsAdapter.itemCount == 0)
 
                     if (data.isSubscribed) {
-                        grouppage_subscribe_button.text = "Unsubscribe"
+                        grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
                     } else {
-                        grouppage_subscribe_button.text = "Subscribe"
+                        grouppage_subscribe_button.text = getString(R.string.subscribe_text)
                     }
 
                     grouppage_subscribe_button.setOnClickListener {
@@ -133,4 +133,5 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
     override fun setSubPath(): PublishSubject<String> = setSubPathSubject
     override fun subscribe(): PublishSubject<String> = subscribeSubject
     override fun unsubscribe(): PublishSubject<String> = unsubscribeSubject
+    override fun updateSeen(): PublishSubject<String> = seenSubject
 }

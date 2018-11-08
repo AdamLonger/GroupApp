@@ -2,7 +2,10 @@ package data.firebase
 
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
 import com.google.firebase.database.FirebaseDatabase
+import com.wanari.meetingtimer.common.utils.TRIGGER
+import com.wanari.meetingtimer.common.utils.toFirebaseString
 import data.mapper.toObject
+import data.utils.consts.DEFAULT_FIREBASE_DATE_TIME
 import data.utils.subscriptionsPath
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -10,6 +13,8 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.zipWith
 import io.reactivex.subjects.PublishSubject
 import model.GroupObject
+import org.threeten.bp.LocalDateTime
+import java.util.*
 
 class SubscriptionManager(authManager: AuthManager,
                           private val database: FirebaseDatabase,
@@ -18,124 +23,127 @@ class SubscriptionManager(authManager: AuthManager,
         DatabaseManager(authManager, database) {
 
     private val databaseRef = database.reference
-    private val invalidationSubject: Observable<Any> = PublishSubject.merge(
-            groupManager.getItemChangeSubject(),
-            seenManager.getItemChangeSubject())
+    private val invalidationSubject = PublishSubject.create<Any>()
 
-    fun getItemChangeSubject(): Observable<Any> = invalidationSubject
+    private val mergedInvalidationSubject: Observable<Any> = PublishSubject.merge(
+            groupManager.getItemChangeSubject(),
+            seenManager.getItemChangeSubject(),
+            invalidationSubject)
+
+    fun getItemChangeSubject(): Observable<Any> = mergedInvalidationSubject
 
     fun getItems(count: Int): Single<List<GroupObject>> {
-        return Single.defer {
-            val userid = authManager.getCurrentUserBlocking()?.uid
-            userid?.let { uid ->
-                RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath(uid))
-                        .orderByKey()
-                        .limitToFirst(count))
-                        .map { it.value as ArrayList<String> }
-                        .flatMap {
-                            Single.merge(it
-                                    .map { item ->
-                                        groupManager.getItem(item).zipWith(
-                                                seenManager.getItem(item)
-                                        ).map { pair ->
-                                            pair.first.toObject().apply {
-                                                isNotSeen = this.latestDate?.isAfter(pair.second) ?: false
-                                            }
-                                        }
+        return RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath())
+                .orderByKey()
+                .limitToFirst(count))
+                .map {
+                    (it.value as? HashMap<String, String>)?.toList()?.sortedBy { it.first }
+                }
+                .flatMap { list ->
+                    return@flatMap Single.merge(list
+                            .map { item ->
+                                groupManager.getItem(item.first).zipWith(
+                                        seenManager.getItem(item.first)
+                                ).map { pair ->
+                                    pair.first.toObject().apply {
+                                        isNotSeen = this.latestDate?.isAfter(pair.second) ?: false
                                     }
-                            ).toList()
-                        }
-            }
-        }
+                                }
+                            }
+                    ).toList()
+                }
     }
 
     fun getItemsAfter(key: String, count: Int): Single<List<GroupObject>> {
-        return Single.defer {
-            val userid = authManager.getCurrentUserBlocking()?.uid
-            userid?.let { uid ->
-                RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath(uid))
-                        .orderByKey()
-                        .startAt(key)
-                        .limitToFirst(count))
-                        .map { it.value as ArrayList<String> }
-                        .flatMap {
-                            Single.merge(it
-                                    .map { item ->
-                                        groupManager.getItem(item).zipWith(
-                                                seenManager.getItem(item)
-                                        ).map { pair ->
-                                            pair.first.toObject().apply {
-                                                isNotSeen = this.latestDate?.isBefore(pair.second) ?: false
-                                            }
-                                        }
+        return RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath())
+                .orderByKey()
+                .startAt(key)
+                .limitToFirst(count))
+                .map {
+                    (it.value as? HashMap<String, String>)?.toList()?.sortedBy { it.first }
+                }
+                .flatMap { list ->
+                    if (list.isEmpty()) return@flatMap Single.just(emptyList<GroupObject>())
+                    return@flatMap Single.merge(list.drop(1)
+                            .map { item ->
+                                groupManager.getItem(item.first).zipWith(
+                                        seenManager.getItem(item.first)
+                                ).map { pair ->
+                                    pair.first.toObject().apply {
+                                        isNotSeen = this.latestDate?.isAfter(pair.second) ?: false
                                     }
-                            ).toList()
-                        }
-            }
-        }
+                                }
+                            }
+                    ).toList()
+                }
     }
 
     fun getItemsBefore(key: String, count: Int): Single<List<GroupObject>> {
-        return Single.defer {
-            val userid = authManager.getCurrentUserBlocking()?.uid
-            userid?.let { uid ->
-                RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath(uid))
-                        .orderByKey()
-                        .startAt(key)
-                        .limitToLast(count))
-                        .map { it.value as ArrayList<String> }
-                        .flatMap {
-                            Single.merge(it
-                                    .map { item ->
-                                        groupManager.getItem(item).zipWith(
-                                                seenManager.getItem(item)
-                                        ).map { pair ->
-                                            pair.first.toObject().apply {
-                                                isNotSeen = this.latestDate?.isBefore(pair.second) ?: false
-                                            }
-                                        }
+        return RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath())
+                .orderByKey()
+                .endAt(key)
+                .limitToLast(count))
+                .map {
+                    (it.value as? HashMap<String, String>)?.toList()?.sortedBy { it.first }
+                }
+                .flatMap { list ->
+                    if (list.isEmpty()) return@flatMap Single.just(emptyList<GroupObject>())
+                    return@flatMap Single.merge(list.dropLast(1)
+                            .map { item ->
+                                groupManager.getItem(item.first).zipWith(
+                                        seenManager.getItem(item.first)
+                                ).map { pair ->
+                                    pair.first.toObject().apply {
+                                        isNotSeen = this.latestDate?.isAfter(pair.second) ?: false
                                     }
-                            ).toList()
-                        }
-            }
-        }
+                                }
+                            }
+                    ).toList()
+                }
+
     }
 
     fun unsubscribe(key: String): Completable {
-        val userid = authManager.getCurrentUserBlocking()?.uid
-        userid?.let { uid ->
-            return RxFirebaseDatabase.data(
-                    databaseRef.child(subscriptionsPath("$uid/"))
-                            .orderByValue()
-                            .equalTo(key))
-                    .flatMapCompletable {snapshot ->
-                        RxFirebaseDatabase.removeValue(
-                                ASD
-                                snapshot.ref
-                        )}
-        }
-        return Completable.complete()
+        return RxFirebaseDatabase.removeValue(
+                databaseRef.child(subscriptionsPath(key)))
+                .andThen(seenManager.removeKey(key))
+                .onErrorComplete()
+                .doOnComplete {
+                    invalidationSubject.onNext(TRIGGER)
+                }
     }
 
     fun subscribe(key: String): Completable {
-        val userid = authManager.getCurrentUserBlocking()?.uid
-        userid?.let { uid ->
-            return RxFirebaseDatabase.setValue(
-                    databaseRef.child(subscriptionsPath("$uid/")).push(), key)
-        }
-        return Completable.complete()
+        return RxFirebaseDatabase.setValue(
+                databaseRef.child(subscriptionsPath(key)),
+                LocalDateTime.now().toFirebaseString() ?: DEFAULT_FIREBASE_DATE_TIME)
+                .andThen(seenManager.putValue(key))
+                .onErrorComplete()
+                .doOnComplete {
+                    invalidationSubject.onNext(TRIGGER)
+                }
+
     }
 
     fun isSubscribed(key: String): Single<Boolean> {
-        val userid = authManager.getCurrentUserBlocking()?.uid
-        userid?.let { uid ->
-            return  RxFirebaseDatabase.data(
-                    databaseRef.child(subscriptionsPath("$uid/"))
-                            .orderByValue()
-                            .equalTo(key))
-                    .map {
-                        it.value != null}
+        return RxFirebaseDatabase.data(
+                databaseRef.child(subscriptionsPath())
+                        .orderByKey()
+                        .equalTo(key))
+                .map {
+                    it.value != null
+                }
+
+
+    }
+
+    fun updateSeen(key: String): Completable {
+        return isSubscribed(key).flatMapCompletable {
+            if (it) {
+                return@flatMapCompletable seenManager.putValue(key)
+            } else {
+                return@flatMapCompletable Completable.complete()
+            }
         }
-        return Single.just(false)
     }
 }

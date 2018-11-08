@@ -45,6 +45,7 @@ class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), News
 
     override fun render(viewState: NewsViewState) {
         AppStateManager.setLoadingState(viewState.loading)
+
         if (!viewState.loading) {
             if (!viewState.subPathSet) {
                 setSubPathSubject.onNext(GENERAL_PATH)

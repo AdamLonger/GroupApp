@@ -33,7 +33,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
         result.add(intent { view -> view.subscribe() }
                 .flatMap { key ->
                     interactor.subscribe(key)
-                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
+                            .mapViewStateChange { GroupPageViewStateChanges.DataInvalid() }
                             .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
@@ -42,7 +42,16 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
         result.add(intent { view -> view.unsubscribe() }
                 .flatMap { key ->
                     interactor.unsubscribe(key)
-                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
+                            .mapViewStateChange { GroupPageViewStateChanges.DataInvalid() }
+                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .startWith(GroupPageViewStateChanges.Loading())
+                            .subscribeOn(Schedulers.io())
+                })
+
+        result.add(intent { view -> view.updateSeen() }
+                .flatMap {key ->
+                    interactor.updateSeen(key)
+                            .mapViewStateChange { GroupPageViewStateChanges.SeenUpdated() }
                             .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())

@@ -11,6 +11,7 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
                     data = null,
                     subPathSet = false,
                     isSubscribed = false,
+                    seenUpdated = false,
                     errorRes = null
             )
         }
@@ -25,6 +26,21 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
             return previousState.copy(
                     loading = false,
                     subPathSet = true,
+                    seenUpdated = false,
+                    errorRes = null
+            )
+        }
+
+        override fun toString(): String {
+            return "Initial"
+        }
+    }
+
+    class DataInvalid : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
+            return previousState.copy(
+                    loading = false,
+                    data = null,
                     errorRes = null
             )
         }
@@ -45,6 +61,20 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
 
         override fun toString(): String {
             return "Loading"
+        }
+    }
+
+    class SeenUpdated : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
+            return previousState.copy(
+                    seenUpdated = true,
+                    loading = false,
+                    errorRes = null
+            )
+        }
+
+        override fun toString(): String {
+            return "Initial"
         }
     }
 
