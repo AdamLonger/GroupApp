@@ -1,4 +1,4 @@
-package com.wanari.meetingtimer.utils.reciever
+package com.wanari.meetingtimer.utils.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context

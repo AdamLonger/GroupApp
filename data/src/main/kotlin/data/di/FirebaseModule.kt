@@ -18,6 +18,7 @@ val firebaseModule = module {
         }
     }
     single { AuthManager(get()) }
+    single { DeviceInfoManager(get(), get()) }
     single { SettingsManager(get(), get()) }
     single { NewsManager(get(), get()) }
     single { GroupManager(get(), get()) }

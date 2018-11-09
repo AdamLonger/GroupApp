@@ -22,8 +22,9 @@ import com.wanari.meetingtimer.presentation.login.LogInScreenFragment
 import com.wanari.meetingtimer.presentation.news.NewsScreenFragment
 import com.wanari.meetingtimer.presentation.settings.SettingsScreenFragment
 import com.wanari.meetingtimer.presentation.usergroups.UserGroupsScreenFragment
-import com.wanari.meetingtimer.utils.reciever.NetworkChangeReceiver
+import com.wanari.meetingtimer.utils.receivers.NetworkChangeReceiver
 import data.firebase.AuthManager
+import data.firebase.DeviceInfoManager
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_root.*
@@ -37,6 +38,7 @@ class RootActivity : BaseActivity() {
     private val schedulers by inject<Schedulers>()
     private val navigator by inject<Navigator>()
     private val authManager by inject<AuthManager>()
+    private val deviceInfoManger by inject<DeviceInfoManager>()
 
     private var currentScreenFragment: WeakReference<out ScreenFragment<*, *>>? = null
     private var networkChangeReceiver: NetworkChangeReceiver = NetworkChangeReceiver()
@@ -62,6 +64,11 @@ class RootActivity : BaseActivity() {
                         navigator.navigateTo(LogInScreen(),
                                 NavigationOptions(purgeStack = true))
                     }
+
+                    if(it){
+                        deviceInfoManger.updateMessagingToken()
+                    }
+
                 }.disposeOnDestroy()
 
         AppStateManager.getNetworkState()

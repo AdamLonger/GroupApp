@@ -16,7 +16,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { path ->
                     interactor.setNewsSubPath(path)
                             .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
-                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
@@ -25,7 +25,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { key ->
                     interactor.getGroupContent(key)
                             .mapViewStateChange { GroupPageViewStateChanges.DataLoaded(it) }
-                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
@@ -34,7 +34,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { key ->
                     interactor.subscribe(key)
                             .mapViewStateChange { GroupPageViewStateChanges.DataInvalid() }
-                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
@@ -43,7 +43,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap { key ->
                     interactor.unsubscribe(key)
                             .mapViewStateChange { GroupPageViewStateChanges.DataInvalid() }
-                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
@@ -52,7 +52,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 .flatMap {key ->
                     interactor.updateSeen(key)
                             .mapViewStateChange { GroupPageViewStateChanges.SeenUpdated() }
-                            .onErrorReturn { _ -> GroupPageViewStateChanges.Error(R.string.message_error) }
+                            .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
