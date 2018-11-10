@@ -2,11 +2,7 @@ package data.utils
 
 import data.firebase.DatabaseManager
 
-const val NO_AUTH_PATH = "noAuth"
-
-fun DatabaseManager.userPath(path: String = ""): String {
-    return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/$path" } ?: NO_AUTH_PATH
-}
+const val NO_AUTH_PATH = ""
 
 fun DatabaseManager.settingsPath(path: String = ""): String {
     return authManager.getCurrentUserBlocking()?.let { "users/${it.uid}/settings/$path" }

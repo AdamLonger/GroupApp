@@ -67,6 +67,10 @@ class RootActivity : BaseActivity() {
 
                     if(it){
                         deviceInfoManger.updateMessagingToken()
+                                .subscribeOn(schedulers.io())
+                                .observeOn(schedulers.io())
+                                .subscribe()
+                                .disposeOnDestroy()
                     }
 
                 }.disposeOnDestroy()
