@@ -3,7 +3,7 @@ package data.firebase
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.FirebaseDatabase
-import com.wanari.meetingtimer.common.utils.GENERAL_PATH
+import com.longer.groupapp.common.utils.GENERAL_PATH
 import data.mapper.getArrayValue
 import data.utils.listeners.FirebaseChildEventListener
 import data.utils.newsPath

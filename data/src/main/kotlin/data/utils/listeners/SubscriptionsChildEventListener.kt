@@ -3,7 +3,7 @@ package data.utils.listeners
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.wanari.meetingtimer.common.utils.TRIGGER
+import com.longer.groupapp.common.utils.TRIGGER
 import io.reactivex.subjects.PublishSubject
 
 class FirebaseChildEventListener(private val invalidationSubject: PublishSubject<Any>) : ChildEventListener {

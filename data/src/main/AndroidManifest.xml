@@ -1,6 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wanari.meetingtimer.data">
+    package="com.longer.groupapp.data">
 
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
 </manifest>

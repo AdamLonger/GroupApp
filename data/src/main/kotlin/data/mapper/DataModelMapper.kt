@@ -1,9 +1,9 @@
 package data.mapper
 
-import com.wanari.meetingtimer.common.utils.nullIfEmpty
-import com.wanari.meetingtimer.common.utils.toFirebaseString
-import com.wanari.meetingtimer.common.utils.toLocalDate
-import com.wanari.meetingtimer.common.utils.toLocalDateTime
+import com.longer.groupapp.common.utils.nullIfEmpty
+import com.longer.groupapp.common.utils.toFirebaseString
+import com.longer.groupapp.common.utils.toLocalDate
+import com.longer.groupapp.common.utils.toLocalDateTime
 import data.utils.consts.FIREBASE_DEFAULT_VALUE
 import data.utils.consts.PROFILE_BIRTH_ID
 import data.utils.consts.PROFILE_GENDER_ID

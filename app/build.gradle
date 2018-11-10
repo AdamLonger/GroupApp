@@ -8,7 +8,7 @@ android {
     buildToolsVersion '28.0.2'
 
     defaultConfig {
-        applicationId "com.wanari.meetingtimer"
+        applicationId "com.longer.groupapp"
         minSdkVersion Versions.minSdkVersion
         targetSdkVersion Versions.targetSdkVersion
         versionCode Versions.versionCode

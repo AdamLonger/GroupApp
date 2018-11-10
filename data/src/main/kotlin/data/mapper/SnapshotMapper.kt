@@ -1,7 +1,7 @@
 package data.mapper
 
 import com.google.firebase.database.DataSnapshot
-import com.wanari.meetingtimer.common.utils.*
+import com.longer.groupapp.common.utils.*
 import model.ProfileDataModel
 
 fun DataSnapshot.getProfile(): ProfileDataModel {

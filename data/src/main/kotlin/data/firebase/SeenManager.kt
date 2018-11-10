@@ -2,8 +2,8 @@ package data.firebase
 
 import com.androidhuman.rxfirebase2.database.RxFirebaseDatabase
 import com.google.firebase.database.FirebaseDatabase
-import com.wanari.meetingtimer.common.utils.toFirebaseString
-import com.wanari.meetingtimer.common.utils.toLocalDateTime
+import com.longer.groupapp.common.utils.toFirebaseString
+import com.longer.groupapp.common.utils.toLocalDateTime
 import data.utils.consts.DEFAULT_FIREBASE_DATE_TIME
 import data.utils.listeners.FirebaseChildEventListener
 import data.utils.seenPath
