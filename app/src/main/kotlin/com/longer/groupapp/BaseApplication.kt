@@ -75,7 +75,7 @@ class BaseApplication : Application() {
         }
 
         val name = getString(R.string.app_name)
-        val channel = NotificationChannel(packageName + DEFAULT_TAG,
+        val channel = NotificationChannel(getString(R.string.default_notification_channel_id),
                 name + DEFAULT_TAG,
                 NotificationManager.IMPORTANCE_DEFAULT)
 

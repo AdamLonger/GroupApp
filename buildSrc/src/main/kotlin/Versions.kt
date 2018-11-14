@@ -7,7 +7,7 @@ object Versions {
     const val versionName = "1.0.2"
 
     const val gradlePlugin = "3.1.4"
-    const val playServicesPlugin = "4.0.2"
+    const val playServicesPlugin = "4.2.0"
     const val playServicesBase = "16.0.1"
     const val kotlinVersion = "1.2.70"
 

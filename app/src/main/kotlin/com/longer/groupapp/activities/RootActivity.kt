@@ -8,6 +8,7 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.support.transition.TransitionInflater
+import com.google.android.gms.common.GoogleApiAvailability
 import com.longer.groupapp.R
 import com.longer.groupapp.common.di.createScreen
 import com.longer.groupapp.common.rx.Schedulers
@@ -65,7 +66,7 @@ class RootActivity : BaseActivity() {
                                 NavigationOptions(purgeStack = true))
                     }
 
-                    if(it){
+                    if (it) {
                         deviceInfoManger.updateMessagingToken()
                                 .subscribeOn(schedulers.io())
                                 .observeOn(schedulers.io())
@@ -93,6 +94,9 @@ class RootActivity : BaseActivity() {
         rootBackButton.setOnClickListener {
             navigator.navigateBack()
         }
+
+        GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this)
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
