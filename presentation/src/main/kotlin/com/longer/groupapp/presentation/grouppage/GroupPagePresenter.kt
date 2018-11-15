@@ -15,7 +15,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
         result.add(intent { view -> view.setSubPath() }
                 .flatMap { path ->
                     interactor.setNewsSubPath(path)
-                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited() }
+                            .mapViewStateChange { GroupPageViewStateChanges.SubPathInited(it) }
                             .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
@@ -49,7 +49,7 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                 })
 
         result.add(intent { view -> view.updateSeen() }
-                .flatMap {key ->
+                .flatMap { key ->
                     interactor.updateSeen(key)
                             .mapViewStateChange { GroupPageViewStateChanges.SeenUpdated() }
                             .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }

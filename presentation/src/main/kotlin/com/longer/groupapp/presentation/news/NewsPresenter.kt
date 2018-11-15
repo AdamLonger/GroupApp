@@ -15,8 +15,8 @@ class NewsPresenter(initialState: NewsViewState, private val newsInteractor: New
         result.add(intent { view -> view.setSubPath() }
                 .flatMap { path ->
                     newsInteractor.setSubPath(path)
-                            .mapViewStateChange { NewsViewStateChanges.SubPathInited() }
-                            .onErrorReturn { _ -> NewsViewStateChanges.Error(R.string.message_error) }
+                            .mapViewStateChange { NewsViewStateChanges.SubPathInited(it) }
+                            .onErrorReturn { NewsViewStateChanges.Error(R.string.message_error) }
                             .startWith(NewsViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })

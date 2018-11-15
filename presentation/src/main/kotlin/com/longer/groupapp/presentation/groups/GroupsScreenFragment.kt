@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.longer.groupapp.common.ui.AppStateManager
 import com.longer.groupapp.common.ui.ScreenFragment
+import com.longer.groupapp.common.utils.setVisiblity
 import com.longer.groupapp.navigation.Navigator
 import com.longer.groupapp.navigation.screens.GroupPageScreen
 import com.longer.groupapp.presentation.R
@@ -39,6 +40,7 @@ class GroupsScreenFragment : ScreenFragment<GroupsScreenView, GroupsViewState>()
 
     override fun render(viewState: GroupsViewState) {
         AppStateManager.setLoadingState(viewState.loading)
+        groups_list_empty_txv.setVisiblity(!viewState.hasChild)
     }
 
     override fun onResume() {

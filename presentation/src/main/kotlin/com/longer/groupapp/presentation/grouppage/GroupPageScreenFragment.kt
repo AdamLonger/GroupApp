@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.squareup.picasso.Picasso
 import com.longer.groupapp.common.ui.AppStateManager
 import com.longer.groupapp.common.ui.ScreenFragment
 import com.longer.groupapp.common.utils.nullIfEmpty
@@ -17,6 +16,7 @@ import com.longer.groupapp.navigation.screens.NewsPageScreen
 import com.longer.groupapp.presentation.R
 import com.longer.groupapp.presentation.news.paging.NewsAdapter
 import com.longer.groupapp.presentation.news.paging.NewsDataProvider
+import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -65,10 +65,10 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
             } else if (viewState.data == null) {
                 loadContentSubject.onNext(screen<GroupPageScreen>().key)
             } else {
+                grouppage_list_empty_txv.setVisiblity(!viewState.hasChild)
                 viewState.data.let { data ->
                     grouppage_name?.text = data.name
                     grouppage_description?.text = data.description
-                    grouppage_list_empty_txv.setVisiblity(newsAdapter.itemCount == 0)
                     data.image?.nullIfEmpty()?.let {
                         Picasso.get().load(it)
                                 .resize(grouppage_image.width, 0)

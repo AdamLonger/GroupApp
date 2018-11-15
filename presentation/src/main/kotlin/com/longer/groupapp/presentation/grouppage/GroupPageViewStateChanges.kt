@@ -21,12 +21,13 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         }
     }
 
-    class SubPathInited : GroupPageViewStateChanges {
+    class SubPathInited(private val hasChild: Boolean) : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
                     loading = false,
                     subPathSet = true,
                     seenUpdated = false,
+                    hasChild = hasChild,
                     errorRes = null
             )
         }

@@ -29,6 +29,20 @@ interface GroupsViewStateChanges : ViewStateChange<GroupsViewState> {
         }
     }
 
+    class ChildCounted(private val hasChild:Boolean) : GroupsViewStateChanges {
+        override fun computeNewState(previousState: GroupsViewState): GroupsViewState {
+            return previousState.copy(
+                    loading = false,
+                    hasChild = hasChild,
+                    errorRes = null
+            )
+        }
+
+        override fun toString(): String {
+            return "Loading"
+        }
+    }
+
     class Error(private val errorRes: Int) : GroupsViewStateChanges {
         override fun computeNewState(previousState: GroupsViewState): GroupsViewState {
             return previousState.copy(

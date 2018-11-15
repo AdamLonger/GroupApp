@@ -8,5 +8,6 @@ data class GroupPageViewState(
         val subPathSet: Boolean = false,
         val isSubscribed: Boolean = false,
         val seenUpdated: Boolean = false,
+        val hasChild: Boolean = true,
         val errorRes: Int? = null
 )

@@ -1,5 +1,6 @@
 package com.longer.groupapp.presentation.news.paging
 
+import android.arch.paging.PagedList
 import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.support.v7.util.DiffUtil
@@ -11,6 +12,7 @@ import com.longer.groupapp.presentation.R
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.item_adapter_news.view.*
 import model.NewsObject
+import timber.log.Timber
 
 class NewsAdapter constructor(
         context: Context
@@ -53,4 +55,9 @@ class NewsAdapter constructor(
     }
 
     fun getNewsClickSubject(): PublishSubject<String> = newsClickSubject
+
+    override fun onCurrentListChanged(currentList: PagedList<NewsObject>?) {
+        Timber.v("LSIZE: " + currentList?.size)
+        super.onCurrentListChanged(currentList)
+    }
 }

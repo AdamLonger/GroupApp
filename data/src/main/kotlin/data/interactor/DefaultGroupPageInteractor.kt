@@ -21,7 +21,7 @@ class DefaultGroupPageInteractor(
         ).map { pair -> pair.first.toObject().apply { isSubscribed = pair.second } }
     }
 
-    override fun setNewsSubPath(path: String): Completable {
+    override fun setNewsSubPath(path: String): Single<Boolean> {
         return newsManager.setSubPath(path)
     }
 

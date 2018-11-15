@@ -14,7 +14,7 @@ class DefaultNewsPageInteractor(
         return newsManager.getItem(key)
     }
 
-    override fun setNewsSubPath(path: String): Completable {
+    override fun setNewsSubPath(path: String): Single<Boolean> {
         return newsManager.setSubPath(path)
     }
 }

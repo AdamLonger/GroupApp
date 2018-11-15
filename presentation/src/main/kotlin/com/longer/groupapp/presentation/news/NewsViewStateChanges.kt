@@ -16,11 +16,12 @@ interface NewsViewStateChanges : ViewStateChange<NewsViewState> {
         }
     }
 
-    class SubPathInited : NewsViewStateChanges {
+    class SubPathInited(private val hasChild: Boolean) : NewsViewStateChanges {
         override fun computeNewState(previousState: NewsViewState): NewsViewState {
             return previousState.copy(
                     loading = false,
                     subPathSet = true,
+                    hasChild = hasChild,
                     errorRes = null
             )
         }

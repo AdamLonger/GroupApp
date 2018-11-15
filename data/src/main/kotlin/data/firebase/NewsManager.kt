@@ -7,7 +7,6 @@ import com.longer.groupapp.common.utils.GENERAL_PATH
 import data.mapper.getArrayValue
 import data.utils.listeners.FirebaseChildEventListener
 import data.utils.newsPath
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
@@ -56,12 +55,16 @@ class NewsManager(authManager: AuthManager, private val database: FirebaseDataba
                 }
     }
 
-    fun setSubPath(path: String): Completable {
-        return Completable.fromAction {
-            databaseRef.child(newsPath(subpath)).removeEventListener(childEventListener)
-            subpath = path
-            databaseRef.child(newsPath(subpath)).addChildEventListener(childEventListener)
-        }
+    fun setSubPath(path: String): Single<Boolean> {
 
+        databaseRef.child(newsPath(subpath)).removeEventListener(childEventListener)
+        subpath = path
+        databaseRef.child(newsPath(subpath)).addChildEventListener(childEventListener)
+
+        return RxFirebaseDatabase.data(databaseRef.child(newsPath(subpath)))
+                .map {
+                    it.hasChildren()
+                }
     }
+
 }

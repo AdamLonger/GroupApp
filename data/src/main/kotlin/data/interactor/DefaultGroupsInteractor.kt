@@ -5,13 +5,11 @@ import data.mapper.toObject
 import interactor.GroupsInteractor
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
 import model.GroupObject
 
 class DefaultGroupsInteractor(
         private val groupManager: GroupManager
 ) : GroupsInteractor {
-
     override fun getItemChangeSubject(): Observable<Any> = groupManager.getItemChangeSubject()
 
     override fun getItems(count: Int): Single<List<GroupObject>> =
@@ -34,4 +32,6 @@ class DefaultGroupsInteractor(
                     it.toObject()
                 }
             }
+
+    override fun hasChild(): Single<Boolean> = groupManager.hasChild()
 }

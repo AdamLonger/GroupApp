@@ -41,6 +41,8 @@
     <string name="loremipsum">Lorem ipsum dolor sit amet, ex alii commodo virtute sit. Iudico aliquando efficiendi ad ius, vix te illum corpora commune. Usu brute velit delectus ne. Sale idque accusata cu pro, case error necessitatibus his in, te vel diceret invenire tractatos. Veri ponderum accusamus vix at, vix essent similique sententiae cu.</string>
     <string name="description_text">Description</string>
     <string name="empty_news_list_text">There are no news in this group!</string>
+    <string name="empty_general_news_list_text">There are no general news!</string>
+    <string name="empty_groups_list_text">There are no groups!</string>
     <string name="subscribe_text">Subscribe</string>
     <string name="unsubscribe_text">Unsubscribe</string>
 </resources>

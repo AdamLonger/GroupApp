@@ -4,7 +4,6 @@ import data.firebase.NewsManager
 import interactor.NewsInteractor
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
 import model.NewsObject
 
 class DefaultNewsInteractor(

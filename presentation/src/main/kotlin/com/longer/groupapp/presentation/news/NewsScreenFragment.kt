@@ -9,6 +9,7 @@ import android.view.View
 import com.longer.groupapp.common.ui.AppStateManager
 import com.longer.groupapp.common.ui.ScreenFragment
 import com.longer.groupapp.common.utils.GENERAL_PATH
+import com.longer.groupapp.common.utils.setVisiblity
 import com.longer.groupapp.navigation.Navigator
 import com.longer.groupapp.navigation.screens.NewsPageScreen
 import com.longer.groupapp.presentation.R
@@ -45,6 +46,7 @@ class NewsScreenFragment : ScreenFragment<NewsScreenView, NewsViewState>(), News
         AppStateManager.setLoadingState(viewState.loading)
 
         if (!viewState.loading) {
+            news_list_empty_txv.setVisiblity(!viewState.hasChild)
             if (!viewState.subPathSet) {
                 setSubPathSubject.onNext(GENERAL_PATH)
             } else if (!recyclerInited) {

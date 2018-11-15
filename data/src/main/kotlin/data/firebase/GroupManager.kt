@@ -53,4 +53,11 @@ class GroupManager(authManager: AuthManager,
                     }
                 }
     }
+
+    fun hasChild(): Single<Boolean> {
+        return RxFirebaseDatabase.data(databaseRef.child(groupsPath()))
+                .map {
+                    it.hasChildren()
+                }
+    }
 }
