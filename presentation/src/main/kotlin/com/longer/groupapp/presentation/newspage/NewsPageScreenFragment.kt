@@ -6,6 +6,7 @@ import com.longer.groupapp.common.ui.ScreenFragment
 import com.longer.groupapp.common.utils.setVisiblity
 import com.longer.groupapp.navigation.screens.NewsPageScreen
 import com.longer.groupapp.presentation.R
+import com.squareup.picasso.Picasso
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_news_page.*
 
@@ -28,8 +29,12 @@ class NewsPageScreenFragment : ScreenFragment<NewsPageScreenView, NewsPageViewSt
                 viewState.data.let { data ->
                     newspage_title?.text = data.title
                     newspage_text?.text = data.text
-                    newspage_image.setVisiblity(data.image == null)
-                    //TODO("Load image with picasso and handle error")
+                    newspage_image.setVisiblity(data.image != null)
+                    data.image?.let {
+                        Picasso.get().load(data.image)
+                                .resize(newspage_image.width, 0)
+                                .into(newspage_image)
+                    }
                 }
             }
         }
