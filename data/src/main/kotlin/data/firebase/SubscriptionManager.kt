@@ -25,7 +25,7 @@ class SubscriptionManager(authManager: AuthManager,
     private val databaseRef = database.reference
     private val invalidationSubject = PublishSubject.create<Any>()
 
-    private val mergedInvalidationSubject: Observable<Any> = PublishSubject.merge(
+    private val mergedInvalidationSubject: Observable<Any> = Observable.merge(
             groupManager.getItemChangeSubject(),
             seenManager.getItemChangeSubject(),
             invalidationSubject)
@@ -133,8 +133,6 @@ class SubscriptionManager(authManager: AuthManager,
                 .map {
                     it.value != null
                 }
-
-
     }
 
     fun updateSeen(key: String): Completable {

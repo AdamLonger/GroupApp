@@ -18,7 +18,9 @@ class DefaultGroupPageInteractor(
     override fun getGroupContent(key: String): Single<GroupObject> {
         return groupManager.getItem(key).zipWith(
                 subscriptionManager.isSubscribed(key)
-        ).map { pair -> pair.first.toObject().apply { isSubscribed = pair.second } }
+        ).map {
+            pair -> pair.first.toObject().apply {
+            isSubscribed = pair.second } }
     }
 
     override fun setNewsSubPath(path: String): Single<Boolean> {

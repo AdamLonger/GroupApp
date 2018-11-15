@@ -60,38 +60,6 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
         if (viewState.loading) {
 
         } else {
-            if (!viewState.seenUpdated) {
-                seenSubject.onNext(screen<GroupPageScreen>().key)
-            } else if (viewState.data == null) {
-                loadContentSubject.onNext(screen<GroupPageScreen>().key)
-            } else {
-                grouppage_list_empty_txv.setVisiblity(!viewState.hasChild)
-                viewState.data.let { data ->
-                    grouppage_name?.text = data.name
-                    grouppage_description?.text = data.description
-                    data.image?.nullIfEmpty()?.let {
-                        Picasso.get().load(it)
-                                .resize(grouppage_image.width, 0)
-                                .into(grouppage_image)
-                    }
-                    grouppage_image.setVisiblity(data.image != null)
-
-                    if (data.isSubscribed) {
-                        grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
-                    } else {
-                        grouppage_subscribe_button.text = getString(R.string.subscribe_text)
-                    }
-
-                    grouppage_subscribe_button.setOnClickListener {
-                        if (data.isSubscribed) {
-                            unsubscribeSubject.onNext(screen<GroupPageScreen>().key)
-                        } else {
-                            subscribeSubject.onNext(screen<GroupPageScreen>().key)
-                        }
-                    }
-                }
-            }
-
             if (!viewState.subPathSet) {
                 setSubPathSubject.onNext(screen<GroupPageScreen>().key)
             } else {
@@ -100,6 +68,38 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
                     recyclerInited = true
                 }
 
+                if (!viewState.seenUpdated) {
+                    seenSubject.onNext(screen<GroupPageScreen>().key)
+                } else if (viewState.data == null) {
+                    loadContentSubject.onNext(screen<GroupPageScreen>().key)
+                } else {
+                    grouppage_list_empty_txv.setVisiblity(!viewState.hasChild)
+                    viewState.data.let { data ->
+                        grouppage_name?.text = data.name
+                        grouppage_description?.text = data.description
+
+                        data.image?.nullIfEmpty()?.let {
+                            Picasso.get().load(it)
+                                    .resize(grouppage_image.width, 0)
+                                    .into(grouppage_image)
+                        }
+                        grouppage_image.setVisiblity(data.image != null)
+
+                        if (data.isSubscribed) {
+                            grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
+                        } else {
+                            grouppage_subscribe_button.text = getString(R.string.subscribe_text)
+                        }
+
+                        grouppage_subscribe_button.setOnClickListener {
+                            if (data.isSubscribed) {
+                                unsubscribeSubject.onNext(screen<GroupPageScreen>().key)
+                            } else {
+                                subscribeSubject.onNext(screen<GroupPageScreen>().key)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -10,7 +10,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
                     loading = false,
                     data = null,
                     subPathSet = false,
-                    isSubscribed = false,
                     seenUpdated = false,
                     errorRes = null
             )
