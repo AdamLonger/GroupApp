@@ -17,6 +17,7 @@ import com.longer.groupapp.presentation.R
 import com.longer.groupapp.presentation.news.paging.NewsAdapter
 import com.longer.groupapp.presentation.news.paging.NewsDataProvider
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -32,11 +33,9 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
     private val newsProvider by inject<NewsDataProvider>()
     private val navigator by inject<Navigator>()
 
-    private val loadContentSubject = PublishSubject.create<String>()
-    private val setSubPathSubject = PublishSubject.create<String>()
     private val subscribeSubject = PublishSubject.create<String>()
     private val unsubscribeSubject = PublishSubject.create<String>()
-    private val seenSubject = PublishSubject.create<String>()
+
     private val disposables = CompositeDisposable()
 
     private lateinit var newsAdapter: NewsAdapter
@@ -60,48 +59,39 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
         if (viewState.loading) {
 
         } else {
-            if (!viewState.subPathSet) {
-                setSubPathSubject.onNext(screen<GroupPageScreen>().key)
-            } else {
-                if (!recyclerInited) {
-                    initRecyclerView()
-                    recyclerInited = true
+            if (!recyclerInited) {
+                initRecyclerView()
+                recyclerInited = true
+            }
+
+            grouppage_list_empty_txv.setVisiblity(!viewState.hasChild)
+            viewState.data?.let { data ->
+                grouppage_name?.text = data.name
+                grouppage_description?.text = data.description
+
+                data.image?.nullIfEmpty()?.let {
+                    Picasso.get().load(it)
+                            .resize(grouppage_image.width, 0)
+                            .into(grouppage_image)
                 }
-
-                if (!viewState.seenUpdated) {
-                    seenSubject.onNext(screen<GroupPageScreen>().key)
-                } else if (viewState.data == null) {
-                    loadContentSubject.onNext(screen<GroupPageScreen>().key)
-                } else {
-                    grouppage_list_empty_txv.setVisiblity(!viewState.hasChild)
-                    viewState.data.let { data ->
-                        grouppage_name?.text = data.name
-                        grouppage_description?.text = data.description
-
-                        data.image?.nullIfEmpty()?.let {
-                            Picasso.get().load(it)
-                                    .resize(grouppage_image.width, 0)
-                                    .into(grouppage_image)
-                        }
-                        grouppage_image.setVisiblity(data.image != null)
-
-                        if (data.isSubscribed) {
-                            grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
-                        } else {
-                            grouppage_subscribe_button.text = getString(R.string.subscribe_text)
-                        }
-
-                        grouppage_subscribe_button.setOnClickListener {
-                            if (data.isSubscribed) {
-                                unsubscribeSubject.onNext(screen<GroupPageScreen>().key)
-                            } else {
-                                subscribeSubject.onNext(screen<GroupPageScreen>().key)
-                            }
-                        }
-                    }
-                }
+                grouppage_image.setVisiblity(data.image != null)
             }
         }
+
+        if (viewState.isSubscribed) {
+            grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
+        } else {
+            grouppage_subscribe_button.text = getString(R.string.subscribe_text)
+        }
+
+        grouppage_subscribe_button.setOnClickListener {
+            if (viewState.isSubscribed) {
+                unsubscribeSubject.onNext(screen<GroupPageScreen>().key)
+            } else {
+                subscribeSubject.onNext(screen<GroupPageScreen>().key)
+            }
+        }
+
     }
 
     private fun initRecyclerView() {
@@ -137,9 +127,12 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
         super.onPause()
     }
 
-    override fun loadContent(): PublishSubject<String> = loadContentSubject
-    override fun setSubPath(): PublishSubject<String> = setSubPathSubject
+    override fun setSubPath(): Observable<String> {
+        return Observable.defer {
+            Observable.just(screen<GroupPageScreen>().key)
+        }
+    }
+
     override fun subscribe(): PublishSubject<String> = subscribeSubject
     override fun unsubscribe(): PublishSubject<String> = unsubscribeSubject
-    override fun updateSeen(): PublishSubject<String> = seenSubject
 }

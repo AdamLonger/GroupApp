@@ -23,7 +23,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
     class SubPathInited(private val hasChild: Boolean) : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
-                    loading = false,
                     subPathSet = true,
                     seenUpdated = false,
                     hasChild = hasChild,
@@ -36,17 +35,27 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         }
     }
 
-    class DataInvalid : GroupPageViewStateChanges {
+    class Subscribed : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
-                    loading = false,
-                    data = null,
-                    errorRes = null
+                    isSubscribed = true
             )
         }
 
         override fun toString(): String {
-            return "Initial"
+            return "Subscribed"
+        }
+    }
+
+    class Unsubscribed : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
+            return previousState.copy(
+                    isSubscribed = false
+            )
+        }
+
+        override fun toString(): String {
+            return "Unsubscribed"
         }
     }
 
@@ -68,7 +77,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
                     seenUpdated = true,
-                    loading = false,
                     errorRes = null
             )
         }
@@ -88,6 +96,18 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
 
         override fun toString(): String {
             return "Loading"
+        }
+    }
+
+    class StopLoading : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
+            return previousState.copy(
+                    loading = false
+            )
+        }
+
+        override fun toString(): String {
+            return "StopLoading"
         }
     }
 

@@ -125,8 +125,8 @@ class SubscriptionManager(authManager: AuthManager,
 
     }
 
-    fun isSubscribed(key: String): Single<Boolean> {
-        return RxFirebaseDatabase.data(
+    fun isSubscribed(key: String): Observable<Boolean> {
+        return RxFirebaseDatabase.dataChanges(
                 databaseRef.child(subscriptionsPath())
                         .orderByKey()
                         .equalTo(key))
@@ -136,12 +136,14 @@ class SubscriptionManager(authManager: AuthManager,
     }
 
     fun updateSeen(key: String): Completable {
-        return isSubscribed(key).flatMapCompletable {
-            if (it) {
-                return@flatMapCompletable seenManager.putValue(key)
-            } else {
-                return@flatMapCompletable Completable.complete()
-            }
-        }
+        return isSubscribed(key)
+                .firstOrError()
+                .flatMapCompletable {
+                    if (it) {
+                        return@flatMapCompletable seenManager.putValue(key)
+                    } else {
+                        return@flatMapCompletable Completable.complete()
+                    }
+                }
     }
 }

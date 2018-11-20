@@ -6,8 +6,8 @@ import data.firebase.SubscriptionManager
 import data.mapper.toObject
 import interactor.GroupPageInteractor
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.rxkotlin.zipWith
 import model.GroupObject
 
 class DefaultGroupPageInteractor(
@@ -16,15 +16,15 @@ class DefaultGroupPageInteractor(
         private val newsManager: NewsManager
 ) : GroupPageInteractor {
     override fun getGroupContent(key: String): Single<GroupObject> {
-        return groupManager.getItem(key).zipWith(
-                subscriptionManager.isSubscribed(key)
-        ).map {
-            pair -> pair.first.toObject().apply {
-            isSubscribed = pair.second } }
+        return groupManager.getItem(key).map { it.toObject() }
     }
 
-    override fun setNewsSubPath(path: String): Single<Boolean> {
-        return newsManager.setSubPath(path)
+    override fun getSubscriptionState(key: String): Observable<Boolean> {
+        return subscriptionManager.isSubscribed(key)
+    }
+
+    override fun setNewsSubPath(key: String): Single<Boolean> {
+        return newsManager.setSubPath(key)
     }
 
     override fun subscribe(key: String): Completable {
