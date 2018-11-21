@@ -9,8 +9,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
             return previousState.copy(
                     loading = false,
                     data = null,
-                    subPathSet = false,
-                    seenUpdated = false,
                     errorRes = null
             )
         }
@@ -23,8 +21,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
     class SubPathInited(private val hasChild: Boolean) : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
-                    subPathSet = true,
-                    seenUpdated = false,
                     hasChild = hasChild,
                     errorRes = null
             )
@@ -33,6 +29,11 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         override fun toString(): String {
             return "Initial"
         }
+    }
+
+    class SeenUpdated : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState) = previousState
+        override fun toString() = "SeenUpdated"
     }
 
     class Subscribed : GroupPageViewStateChanges {
@@ -73,19 +74,6 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
         }
     }
 
-    class SeenUpdated : GroupPageViewStateChanges {
-        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
-            return previousState.copy(
-                    seenUpdated = true,
-                    errorRes = null
-            )
-        }
-
-        override fun toString(): String {
-            return "Initial"
-        }
-    }
-
     class Loading : GroupPageViewStateChanges {
         override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
             return previousState.copy(
@@ -108,6 +96,18 @@ interface GroupPageViewStateChanges : ViewStateChange<GroupPageViewState> {
 
         override fun toString(): String {
             return "StopLoading"
+        }
+    }
+
+    class LockUI(private val locked: Boolean) : GroupPageViewStateChanges {
+        override fun computeNewState(previousState: GroupPageViewState): GroupPageViewState {
+            return previousState.copy(
+                    uiLocked = locked
+            )
+        }
+
+        override fun toString(): String {
+            return "LockUI"
         }
     }
 

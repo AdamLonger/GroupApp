@@ -78,6 +78,10 @@ class GroupPageScreenFragment : ScreenFragment<GroupPageScreenView, GroupPageVie
             }
         }
 
+        viewState.uiLocked.let {
+            grouppage_subscribe_button.isEnabled = !it
+        }
+
         if (viewState.isSubscribed) {
             grouppage_subscribe_button.text = getString(R.string.unsubscribe_text)
         } else {

@@ -61,7 +61,7 @@ interface SettingsViewStateChanges : ViewStateChange<SettingsViewState> {
         }
     }
 
-    class LockUI(private val locked:Boolean) : SettingsViewStateChanges {
+    class LockUI(private val locked: Boolean) : SettingsViewStateChanges {
         override fun computeNewState(previousState: SettingsViewState): SettingsViewState {
             return previousState.copy(
                     uiLocked = locked

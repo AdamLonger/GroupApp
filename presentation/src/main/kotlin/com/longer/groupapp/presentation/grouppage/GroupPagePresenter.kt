@@ -2,6 +2,7 @@ package com.longer.groupapp.presentation.grouppage
 
 import com.longer.groupapp.common.mvi.BasePresenter
 import com.longer.groupapp.common.mvi.ViewStateChange
+import com.longer.groupapp.common.ui.AppStateManager
 import com.longer.groupapp.presentation.R
 import interactor.GroupPageInteractor
 import io.reactivex.Observable
@@ -60,6 +61,14 @@ class GroupPagePresenter(initialState: GroupPageViewState, private val interacto
                             .startWith(GroupPageViewStateChanges.Loading())
                             .subscribeOn(Schedulers.io())
                 })
+
+        result.add(AppStateManager.getNetworkState()
+                .toObservable()
+                .mapViewStateChange {
+                    GroupPageViewStateChanges.LockUI(!it)
+                }
+                .onErrorReturn { GroupPageViewStateChanges.Error(R.string.message_error) }
+                .subscribeOn(Schedulers.io()))
 
         return result
     }

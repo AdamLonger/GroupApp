@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <View
-        android:focusable="true"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:focusable="true"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/settings_start_guide"
@@ -104,6 +104,7 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:enabled="false"
         android:text="@string/settings_save_btn_text"
         app:layout_constraintBottom_toTopOf="@id/settings_logout_btn"
         app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"
@@ -115,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
+        android:enabled="false"
         android:text="@string/log_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/settings_end_guide"

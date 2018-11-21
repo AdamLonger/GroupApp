@@ -34,7 +34,6 @@ class SubscriptionManager(authManager: AuthManager,
 
     fun getItems(count: Int): Single<List<GroupObject>> {
         return RxFirebaseDatabase.data(databaseRef.child(subscriptionsPath())
-                .orderByKey()
                 .limitToFirst(count))
                 .map {
                     (it.value as? HashMap<String, String>)?.toList()?.sortedBy { it.first }

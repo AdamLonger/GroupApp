@@ -17,7 +17,7 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
         val result = ArrayList<Observable<ViewStateChange<SettingsViewState>>>()
 
         result.add(intent { view -> view.logOut() }
-                .flatMap { _ ->
+                .flatMap {
                     settingsInteractor.logOut()
                             .mapViewStateChange { SettingsViewStateChanges.Initial() }
                             .onErrorReturn { SettingsViewStateChanges.Error(R.string.message_error) }
@@ -26,7 +26,7 @@ class SettingsPresenter(initialState: SettingsViewState, private val settingsInt
 
         result.add(settingsInteractor.loadProfile().ofType<Some<ProfileObject>>()
                 .mapViewStateChange { SettingsViewStateChanges.ProfileLoaded(it.value) }
-                .onErrorReturn { _ -> SettingsViewStateChanges.Error(R.string.message_error) }
+                .onErrorReturn {  SettingsViewStateChanges.Error(R.string.message_error) }
                 .startWith(SettingsViewStateChanges.Loading())
                 .subscribeOn(Schedulers.io()))
 
