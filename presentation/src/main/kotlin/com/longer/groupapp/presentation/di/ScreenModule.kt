@@ -25,6 +25,7 @@ import com.longer.groupapp.presentation.usergroups.paging.UserGroupsDataProvider
 import org.koin.dsl.module.module
 
 val screenModule = module {
+
     declareScreen<LogInScreen> { LogInScreenFragment() }
     factory { LogInPresenter(it[0], get()) }
 

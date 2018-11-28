@@ -11,7 +11,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.longer.groupapp.common.di.schedulerModule
 import com.longer.groupapp.di.configModule
 import com.longer.groupapp.di.navigatorModule
-import com.longer.groupapp.di.permissionModule
 import com.longer.groupapp.presentation.di.screenModule
 import com.longer.groupapp.utils.KoinLogger
 import data.di.dataModule
@@ -35,7 +34,6 @@ class BaseApplication : Application() {
             configModule,
             schedulerModule,
             navigatorModule,
-            permissionModule,
             dataModule,
             firebaseModule,
             screenModule
